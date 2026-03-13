@@ -1,0 +1,21 @@
+import { ChevronRight } from 'lucide-react'
+
+export default function ProductBreadcrumb({ breadcrumbs }) {
+
+
+
+  return (
+    <nav className="flex items-center gap-2 text-sm text-gray-600 py-4">
+      {breadcrumbs.map((crumb, idx) => (
+        <div key={idx} className="flex items-center gap-2">
+          <a href={crumb.href} className="hover:text-yellow-600 font-light transition">
+            {crumb.label}
+          </a>
+          {idx < breadcrumbs.length - 1 && (
+            <ChevronRight size={16} className="text-gray-400" />
+          )}
+        </div>
+      ))}
+    </nav>
+  )
+}
