@@ -15,7 +15,7 @@ export default function PromoTiles() {
                 For<span className="ml-2">Men</span>
               </h3>
               <p className="text-sm md:text-base font-light mb-4">CRYSTAL CLARITY & UV PROTECTION</p>
-              <Link href={'/shop'} className="pBg text-white px-4 py-2 rounded font-light text-sm hover:bg-yellow-600 transition flex items-center gap-2 w-fit">
+              <Link href={'/mens'} className="pBg text-white px-4 py-2 rounded font-light text-sm hover:bg-yellow-600 transition flex items-center gap-2 w-fit">
                 SHOP NOW <ArrowRight size={16} />
               </Link>
             </div>
@@ -30,7 +30,7 @@ export default function PromoTiles() {
                 For<span className="ml-2">women</span>
               </h3>
               <p className="text-sm md:text-base font-light mb-4">CRYSTAL CLARITY & UV PROTECTION</p>
-              <Link href={'/shop'} className="pBg text-white px-4 py-2 rounded font-light text-sm hover:bg-yellow-600 transition flex items-center gap-2 w-fit">
+              <Link href={'/womens'} className="pBg text-white px-4 py-2 rounded font-light text-sm hover:bg-yellow-600 transition flex items-center gap-2 w-fit">
                 SHOP NOW <ArrowRight size={16} />
               </Link>
             </div>

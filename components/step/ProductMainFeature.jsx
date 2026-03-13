@@ -28,7 +28,7 @@ const ProductMainFeature = ({ product, activeIndex, setactiveIndex, selectedImag
             {/* Details */}
             <div className="md:col-span-4">
                 {
-                    step === 1 ? <VisionType /> : step === 2 ? <PrescriptionInputer /> : step === 3 ? <PDType /> : step === 4 ? <LensThicknes /> : step === 5 ? <ProtectiveCoatings /> : step === 6 ? <Transition /> : step === 7 ? <Review /> : <ProductDetails product={product} activeIndex={activeIndex} setactiveIndex={setactiveIndex} />
+                    step === 1 ? <VisionType /> : step === 2 ? <PrescriptionInputer /> : step === 3 ? <PDType /> : step === 4 ? <LensThicknes /> : step === 5 ? <ProtectiveCoatings /> : step === 6 ? <Transition /> : step === 7 ? <Review /> : <ProductDetails product={product} activeIndex={activeIndex} setactiveIndex={setactiveIndex} setSelectedImage={setSelectedImage} />
                 }
             </div>
 

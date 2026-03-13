@@ -17,7 +17,6 @@ export default function AccessoriesCard({ item }) {
 
 
 
-    console.log(item);
 
 
 
@@ -29,10 +28,28 @@ export default function AccessoriesCard({ item }) {
 
 
 
+        const accessoryItem = {
+            cartItemId: crypto.randomUUID(),
+            productId: item?._id,              // your product's ID
+            type: item?.productType,
+            name: item?.name,
+            price: item?.price,
+            quantity: 1,
+            image: item?.img,
+            description: item?.description,
+            addedAt: new Date().toISOString(),
+        }
+
+
+
+
+
+
+
         const hasData = JSON.parse(localStorage.getItem("lensData"));
 
         if (hasData === null) {
-            const finalData = [item];
+            const finalData = [accessoryItem];
             localStorage.setItem("lensData", JSON.stringify(finalData));
         } else if (hasData.length === 0) {
             const finalData = [item];
@@ -42,7 +59,8 @@ export default function AccessoriesCard({ item }) {
             localStorage.setItem("lensData", JSON.stringify(finalData));
         }
 
-
+        // Trigger header update
+        window.dispatchEvent(new Event("lensUpdated"));
         setTimeout(() => {
             setisLoading(false);
         }, 700);
