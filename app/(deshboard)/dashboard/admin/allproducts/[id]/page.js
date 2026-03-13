@@ -471,17 +471,6 @@ export default function ProductSinglePage() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     if (loading) {
         return (
             <div className="h-screen flex justify-center items-center">
@@ -491,14 +480,6 @@ export default function ProductSinglePage() {
             </div>
         )
     }
-
-
-
-
-
-
-
-
 
 
 

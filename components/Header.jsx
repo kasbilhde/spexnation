@@ -91,7 +91,7 @@ export default function Header() {
           <div className="flex items-start gap-1">
             {/* Logo */}
             <Link href="/" className="flex-shrink-0 flex items-center gap-2">
-              <img src="/logo.png" alt="Spex Nation" className="h-10 lg:h-12" />
+              <img src="/logo.png" alt="Spex Nation" className="h-6 sm:h-7 md:h-10 lg:h-12" />
             </Link>
             <img src="/BritainFlag.jpg" alt="BritainFlag" className="w-10 rounded" />
           </div>

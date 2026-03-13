@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { useRef, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { GoPlusCircle } from "react-icons/go";
@@ -525,14 +526,14 @@ function PrescriptionInputer() {
                             <span>
                                 Upload your Prescription
                             </span>
-                            <span className="text-[10px] bg-yellow-100  px-1 w-fit">jpg, jpeg, png, pdf files are allowed</span>
+                            <span className="text-[10px] bg-yellow-100  px-1 w-fit">jpg, jpeg, png, webp,pdf files are allowed</span>
                         </label>
                         <div className="flex items-center gap-2 mt-2 h-full">
                             <input
                                 id="file2"
                                 ref={fileInputRef}
                                 type="file"
-                                accept=".png,.jpg,.jpeg,.pdf,"
+                                accept=".png,.jpg,.jpeg, .webp,.pdf,"
                                 onChange={(e) => { handleFileChanges(e) }}
                                 className="hidden w-full border p-2 rounded-md focus:outline-yellow-500/60 text-gray-700/80 cursor-pointer"
                             />
@@ -557,7 +558,7 @@ function PrescriptionInputer() {
 
 
                             {
-                                filetype == "image/png" || filetype == "image/jpeg" || filetype == "image/jpg" ? (
+                                filetype == "image/png" || filetype == "image/jpeg" || filetype == "image/jpg" || filetype == "image/webp" ? (
                                     <Image className="w-full h-full object-cover" src={lens?.prescriptionImage ? lens?.prescriptionImage : defaultImage} width={100} height={1000} alt="prescription" />
                                 ) : (
 
@@ -833,7 +834,7 @@ function PrescriptionInputer() {
                 </div>
 
                 <p className="font-medium text-lg text-gray-600/70">
-                    I confirm that I’ve read and agree to the <span className="underline">Terms and Conditions</span> and that the prescription is valid.
+                    I confirm that I’ve read and agree to the <Link href="/termsandconditions" target="_blank" className="underline sCl">Terms and Conditions</Link> and that the prescription is valid.
                 </p>
             </div>
 

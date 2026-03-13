@@ -11,7 +11,7 @@ import ProductGridSkeleton from '../../../components/skalaton/ProductGridSkeleto
 
 const breadcrumbs = [
     { label: 'Home', href: '/' },
-    { label: 'Shop', href: '/shop' },
+    { label: 'Accessories', href: '/accessories' },
 ]
 
 
@@ -35,8 +35,6 @@ export default function ProductPage() {
 
 
     const [isDevelopment, setisDevelopment] = useState(true);
-
-
 
 
 
@@ -193,7 +191,7 @@ export default function ProductPage() {
 
                 <ProductBreadcrumb breadcrumbs={breadcrumbs} />
 
-                <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                <div className="hidden grid grid-cols-1 lg:grid-cols-5 gap-4">
                     <div className={`lg:col-span-1 p-4 border border-gray-200 bg-white max-h-[500px] lg:max-h-[700px] w-full z-40 ${fopen ? 'sticky top-[75px]' : 'lg:sticky lg:top-[75px]'}`}>
                         <ShopFilter fopen={fopen} setfOpen={setfOpen} selectedBrand={selectedBrand} setslectedBrand={setslectedBrand} selectedGender={selectedGender} setselectedGender={setselectedGender} selectedMatarial={selectedMatarial} setselectedMatarial={setselectedMatarial} selectedPrice={selectedPrice} setselectedPrice={setselectedPrice} selectedLenWidth={selectedLenWidth} setselectedLenWidth={setselectedLenWidth} selectedBrideWidth={selectedBrideWidth} setselectedBrideWidth={setselectedBrideWidth} handleClearFilter={handleClearFilter} filterLength={filteredAccessories?.length} />
                     </div>
@@ -205,6 +203,19 @@ export default function ProductPage() {
                         ))}
                     </div>
                 </div>
+
+
+
+
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+                    {filteredAccessories?.map((item, index) => (
+                        <div key={index} className="text-center">
+                            <AccessoriesCard item={item} />
+                        </div>
+                    ))}
+                </div>
+
+
             </Container>
         </main>
     )

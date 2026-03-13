@@ -1,6 +1,7 @@
 'use client'
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import StatusBadge from "../../../../../components/Deshboard/StatusBadge";
@@ -8,9 +9,10 @@ import Loading from "../../../../../components/Loading";
 import getTookn from "../../../../../lib/getTookn";
 import verifyJWT from "../../../../../lib/verifyJWT";
 
+
 const MyOrderPage = () => {
 
-
+    const router = useRouter();
     const [myID, setmyID] = useState('');
     const [tk, settk] = useState('');
     const [loading, setLoading] = useState(false);
@@ -61,12 +63,10 @@ const MyOrderPage = () => {
 
 
 
-
     // handle re order funtion is here
     const handleReorder = async (e, row, tk) => {
 
         e.preventDefault();
-
 
         setLoading(true);
 
@@ -82,21 +82,20 @@ const MyOrderPage = () => {
             });
 
             const res = await response.json();
-            console.log(res);
-            setLoading(false);
+            if (res?.success) {
+                router.push(res?.url);
+                setLoading(false);
+            } else {
+                toast.error(res?.message);
+                setLoading(false);
+            }
+
         } catch (error) {
             console.error('Error while reorder:', error);
             setLoading(false);
         }
 
-
-
-
-
     }
-
-
-
 
 
 
@@ -115,11 +114,6 @@ const MyOrderPage = () => {
 
 
 
-
-
-
-
-
     if (loading) {
         return (
             <div className="h-screen flex justify-center items-center">
@@ -130,9 +124,6 @@ const MyOrderPage = () => {
         )
     }
 
-
-
-    console.log(myOrders);
 
 
 

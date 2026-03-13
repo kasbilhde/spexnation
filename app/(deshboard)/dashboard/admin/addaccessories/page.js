@@ -210,6 +210,12 @@ const AccessoriesPage = () => {
 
         if (res?.success) {
             toast.success("Accessories Updated Successfully");
+            setisEdit(false);
+            setName("");
+            setprice("");
+            setdescription("");
+            setimg("");
+            setrowID("");
             fetchAccessories();
         } else {
             toast.error(res?.message);
@@ -277,14 +283,14 @@ const AccessoriesPage = () => {
                             <span>
                                 Upload Accessories Image <span className="text-md text-red-600">*</span>
                             </span>
-                            <span className="text-[10px] bg-yellow-100  px-1 w-fit">jpg, jpeg, png files are allowed</span>
+                            <span className="text-[10px] bg-yellow-100  px-1 w-fit">jpg, jpeg, png and webp files are allowed</span>
                         </label>
                         <div className="flex items-center gap-2 mt-2 h-full">
                             <input
                                 id="file2"
                                 ref={fileInputRef}
                                 type="file"
-                                accept=".png,.jpg,.jpeg"
+                                accept=".png,.jpg,.jpeg,.webp"
                                 onChange={(e) => { handleImageChange(e) }}
                                 className="hidden w-full border p-2 rounded-md focus:outline-yellow-500/60 text-gray-700/80 cursor-pointer"
                             />
