@@ -34,7 +34,7 @@ export default function ProductPage() {
     const [filteredAccessories, setfilteredAccessories] = useState([]);
 
 
-    const [isDevelopment, setisDevelopment] = useState(true);
+    const [isDevelopment, setisDevelopment] = useState(false);
 
 
 

@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Loading from "../../../../components/Loading";
 import ProductBreadcrumb from "../../../../components/ProductBreadcrumb";
+import { getCart } from '../../../../lib/cartHelper';
 import getTookn from "../../../../lib/getTookn";
-import getTotalPrice from "../../../../lib/getTotalPrice";
 import verifyJWT from "../../../../lib/verifyJWT";
 
 
@@ -27,7 +27,7 @@ export default function Checkout() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [iscouponLoading, setiscouponLoading] = useState(false);
-    const [hasData, sethasData] = useState([]);
+    const [Cart, setCart] = useState([]);
     const [IsLogedIn, setIsLogedIn] = useState(false);
 
     const [userID, setuserID] = useState('');
@@ -80,31 +80,15 @@ export default function Checkout() {
         loadUser();
 
 
-        const localData = JSON.parse(localStorage.getItem("lensData")) || [];
-
-        if (localData.length === 0) {
+        const crt = getCart();
+        if (crt?.items?.length === 0) {
             router.push('/basket');
             return;
         }
-
-        sethasData(localData);
+        setCart(crt);
         window.scrollTo(0, 0);
     }, []);
 
-
-
-
-
-    const TotalCalculation = () => {
-        let priceTotal = 0;
-        hasData?.forEach((item) => {
-            const thisQuantity = item.quantity;
-            const thisGetTotal = getTotalPrice(item.total);
-            priceTotal += thisGetTotal * thisQuantity;
-        });
-
-        return priceTotal;
-    };
 
 
 
@@ -160,7 +144,7 @@ export default function Checkout() {
 
 
 
-    let gTotal = TotalCalculation();
+    let gTotal = Cart?.subtotal;
     let discount = Math.round(gTotal * (couponDiscount / 100));
     let grandTotal = gTotal - discount;
 
@@ -184,7 +168,7 @@ export default function Checkout() {
 
         setIsLoading(true);
 
-        const data = {
+        const finalOrderObject = {
             userID,
             fullname,
             email,
@@ -194,11 +178,14 @@ export default function Checkout() {
             state,
             zipcode,
             country,
-            hasData,
+            currency: Cart?.currency,
+            subtotal: Cart?.subtotal,
+            totalItems: Cart?.totalItems,
             iscoupon: isApplyedShow,
-            coupondiscount: couponDiscount,
+            coupondiscountPercentage: couponDiscount,
             discountPrice: discount,
-            grandTotal
+            PaymentTotal: grandTotal,
+            items: Cart?.items
         };
 
         // Make API call to add the product
@@ -207,13 +194,10 @@ export default function Checkout() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(finalOrderObject),
         });
 
         const res = await response.json();
-
-
-        console.log(res);
 
         if (res.success) {
             toast.success(res.message);
@@ -237,7 +221,7 @@ export default function Checkout() {
 
 
 
-    console.log(hasData);
+    console.log(Cart);
 
 
 
@@ -349,11 +333,11 @@ export default function Checkout() {
                                 <div className="space-y-3 text-sm">
                                     <div className="flex justify-between">
                                         <span>Items:</span>
-                                        <span>{hasData?.length}</span>
+                                        <span>{Cart?.totalItems}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Subtotal</span>
-                                        <span>£{TotalCalculation()}</span>
+                                        <span>£{Cart?.subtotal}</span>
                                     </div>
                                 </div>
                             </div>
@@ -399,7 +383,7 @@ export default function Checkout() {
                                     </div>
                                     <div className="text-gray-500 flex justify-between font-semibold text-md">
                                         <span>Coupon Discount ({couponDiscount}%)</span>
-                                        <span>£{discount}</span>
+                                        <span>- £{discount}</span>
                                     </div>
                                 </div>
                             )}
@@ -407,7 +391,7 @@ export default function Checkout() {
 
                             <hr />
                             <div className="flex justify-between font-semibold text-lg mt-4">
-                                <span>Order Total</span>
+                                <span>Total</span>
                                 <span>£{grandTotal}</span>
                             </div>
 
