@@ -47,21 +47,22 @@ const ProductSapraratorDetailes = ({ single, index }) => {
                 </div>
 
 
-                <div className="border border-gray-100 bg-gray-100 px-3 py-2 flex items-center">
-                    <label className="text-gray-800">
-                        Product Colour:
-                    </label>
-                    <span className="text-gray-500 pl-2 flex items-center">
-                        <div style={{ backgroundColor: single?.AllLensInfo?.LenColor[0]?.value }} className={`h-5 w-8 inline-block mr-2`} />
-                        {single?.AllLensInfo?.LenColor[0]?.name}
-                    </span>
-                </div>
-
-
 
                 {
                     single?.type === "Frame" && (
                         <>
+
+                            <div className="border border-gray-100 bg-gray-100 px-3 py-2 flex items-center">
+                                <label className="text-gray-800">
+                                    Product Colour:
+                                </label>
+                                <span className="text-gray-500 pl-2 flex items-center">
+                                    <div style={{ backgroundColor: single?.AllLensInfo?.LenColor[0]?.value }} className={`h-5 w-8 inline-block mr-2`} />
+                                    {single?.AllLensInfo?.LenColor[0]?.name}
+                                </span>
+                            </div>
+
+
                             <div className="border border-gray-100 bg-gray-100 px-3 py-2 flex items-center">
                                 <label className="text-gray-800">
                                     Lens Brand:
@@ -236,7 +237,7 @@ const ProductSapraratorDetailes = ({ single, index }) => {
                                                     {
                                                         item?.name == "Sunglasses" && item?.target == "Tints" && (
                                                             <span>
-                                                                <b className="">Darkness: </b> {lens?.darkness == 'dark' ? "Dark (20%)" : lens?.darkness == 'medium' ? "Medium (50%)" : lens?.darkness == 'light' ? "Light (80% transmission)" : null}
+                                                                <b className="">Darkness: </b> {single?.AllLensInfo?.darkness == 'dark' ? "Dark (20%)" : single?.AllLensInfo?.darkness == 'medium' ? "Medium (50%)" : single?.AllLensInfo?.darkness == 'light' ? "Light (80% transmission)" : null}
                                                             </span>
                                                         )
                                                     }

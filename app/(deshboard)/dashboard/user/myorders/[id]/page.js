@@ -1,9 +1,9 @@
 'use client'
 
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { FaEdit } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import ProductSapraratorDetailes from "../../../../../../components/Deshboard/ProductSapraratorDetailes";
 import StatusBadge from "../../../../../../components/Deshboard/StatusBadge";
@@ -90,6 +90,93 @@ const OrderPage = () => {
 
 
 
+
+
+
+    // handle re order funtion is here
+    const handleReorder = async (e, row, tk) => {
+
+        e.preventDefault();
+
+        setLoading(true);
+
+        try {
+            // Make API call to get all the product
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/reorders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "authorization": `Bearer ${tk}`,
+                },
+                body: JSON.stringify(row)
+            });
+
+            const res = await response.json();
+            if (res?.success) {
+                router.push(res?.url);
+                setLoading(false);
+            } else {
+                toast.error(res?.message);
+                setLoading(false);
+            }
+
+        } catch (error) {
+            console.error('Error while reorder:', error);
+            setLoading(false);
+        }
+
+    }
+
+
+
+
+
+
+
+    // handle re payment funtion is here
+    const handlePaymentAgain = async (e, row, tk) => {
+
+        e.preventDefault();
+
+        setLoading(true);
+
+        try {
+            // Make API call to get all the product
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/repayment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "authorization": `Bearer ${tk}`,
+                },
+                body: JSON.stringify(row)
+            });
+
+            const res = await response.json();
+            if (res?.success) {
+                router.push(res?.url);
+                setLoading(false);
+            } else {
+                toast.error(res?.message);
+                setLoading(false);
+            }
+
+        } catch (error) {
+            console.error('Error while reorder:', error);
+            setLoading(false);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
     if (loading) {
         return (
             <div className="h-screen flex justify-center items-center">
@@ -117,9 +204,29 @@ const OrderPage = () => {
                     </h1>
                 </div>
                 <div className="flex items-center gap-4">
-                    <button disabled={getSingleOrders?.paymentStatus != "paid"} onClick={() => { router.back() }} className={` bg-gray-200 px-2 py-1 text-white bg-yellow-700 items-center gap-1 ${getSingleOrders?.paymentStatus === "paid" ? " flex" : " hidden"} `}>
-                        PDF File
+
+                    <button onClick={(e) => { handleReorder(e, getSingleOrders, token) }} className={` bg-gray-200 px-2 py-1 text-white bg-green-700 flex items-center gap-1 `}>
+                        Reorder
                     </button>
+
+                    {
+                        getSingleOrders?.paymentStatus === "paid" ? (
+                            <Link href={getSingleOrders?.pdf || "#"} target="_blank" className={` bg-gray-200 px-2 py-1 text-white bg-yellow-700 flex items-center gap-1 `}>
+                                PDF File
+                            </Link>
+                        ) : (
+
+                            <button onClick={(e) => { handlePaymentAgain(e, getSingleOrders, token) }} className={` bg-gray-200 px-2 py-1 text-white bg-blue-700 flex items-center gap-1 `}>
+                                Payment Again
+                            </button>
+
+                        )
+                    }
+
+
+
+
+
                 </div>
             </div>
             <div className="mt-6 ">
@@ -159,40 +266,7 @@ const OrderPage = () => {
                                 </label>
                                 <span className="text-gray-500 pl-2">
                                     <StatusBadge type={"Delivery"} value={getSingleOrders?.deliveryStatus} />
-
-                                    <div className="text-sm text-gray-500 group relative w-fit pr-3 pt-1">
-                                        <FaEdit className="cursor-pointer" />
-
-
-                                        <div className="hidden group-hover:block absolute left-0 z-50 top-0 bg-white h-fit w-[200px] border border-gray-200 shadow-md p-6">
-
-                                            <select onChange={(e) => setupdateStatus(e.target.value)} className="border border-gray-200 px-3 py-2 text-sm text-gray-400 cursor-pointer focus:outline-none w-full mb-3">
-
-                                                <option value="">Change Status</option>
-                                                <option value="Pending">Pending</option>
-                                                <option value="Delivered">Delivered</option>
-                                            </select>
-
-                                            <button onClick={(e) => handleUpdateStatus(e, getSingleOrders?._id, updateStatus)} className="w-full bg-yellow-700 text-white py-2 mt-5">Update</button>
-                                        </div>
-
-
-                                    </div>
-
                                 </span>
-                            </div>
-                            <div className="border border-gray-100 bg-gray-100 px-3 py-2  text-wrap overflow-x-scroll flex items-center gap-2">
-                                <label className="text-gray-800">
-                                    Stripe Session ID:
-                                </label>
-                                {
-                                    showStripeId ? (
-                                        <span className="text-gray-500 pl-2">{getSingleOrders?.stripeSessionId || "N/A"}</span>
-                                    ) : (
-                                        <span onClick={() => setshowStripeId(true)} className="text-gray-500 px-0.5 cursor-pointer rounded-md bg-yellow-400/30 border-2 border-yellow-400/30 text-xs text-black font-semibold">Click to Show</span>
-                                    )
-                                }
-
                             </div>
 
                             <div className="border border-gray-100 bg-gray-100 px-3 py-2">

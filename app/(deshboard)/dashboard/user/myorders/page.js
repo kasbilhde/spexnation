@@ -1,6 +1,6 @@
 'use client'
 
-import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -139,14 +139,13 @@ const MyOrderPage = () => {
                     <thead className="bg-gray-100">
                         <tr className="text-left">
                             <th className="p-3 border">Sl</th>
-                            <th className="p-3 border">Frame</th>
                             <th className="p-3 border">Order ID</th>
                             <th className="p-3 border">Name</th>
                             <th className="p-3 border">Email</th>
                             <th className="p-3 border">Payment Status</th>
                             <th className="p-3 border">Dalivary Status</th>
-                            <th className="p-3 border">Action</th>
-                            <th className="p-3 border flex justify-center">Download</th>
+                            <th className="p-3 border">Reorder</th>
+                            <th className="p-3 border flex justify-center">Action</th>
                         </tr>
                     </thead>
 
@@ -156,10 +155,6 @@ const MyOrderPage = () => {
 
                                 <td className="p-2 border text-center text-gray-500">
                                     {index + 1}
-                                </td>
-
-                                <td className="p-2 border text-center text-gray-500">
-                                    <Image src={row?.hasData[0]?.ProductDetails?.product_Images[row?.hasData[0]?.selectedProductIndex]?.img[0]} alt="Frame Image" height={1000} width={1000} className="w-[100px]" />
                                 </td>
 
 
@@ -192,13 +187,9 @@ const MyOrderPage = () => {
                                 </td>
 
                                 <td className="p-2 border flex justify-center text-gray-500 flex-col">
-                                    <a target="_blank" download href={row?.pdf} className="text-center underline text-blue-600">
-                                        PDF
-                                    </a>
-
-                                    <a target="_blank" download href={row?.PrescriptionImage} className="text-center underline text-blue-600">
-                                        Prescription
-                                    </a>
+                                    <Link href={`/dashboard/user/myorders/${row?._id}`} className="text-center underline text-blue-600">
+                                        View
+                                    </Link>
                                 </td>
 
                             </tr>
