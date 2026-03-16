@@ -112,7 +112,7 @@ const OrderPage = () => {
                         <IoIosArrowBack />
                         Back
                     </button>
-                    <h1 className="text-xl font-medium text-gray-600">
+                    <h1 className="hidden md:block text-xl font-medium text-gray-600">
                         Single Order - {getSingleOrders?.orderId}
                     </h1>
                 </div>
