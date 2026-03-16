@@ -9,6 +9,7 @@ import { GoPlusCircle } from "react-icons/go";
 import { RxCross2 } from "react-icons/rx";
 import Loading from "../../../../../components/Loading";
 import clearFileInput from "../../../../../lib/clearFileInput";
+import convertUrlsToBase64Single from "../../../../../lib/convertUrlsToBase64Single";
 import fileToBase64 from "../../../../../lib/fileToBase64";
 import getTookn from "../../../../../lib/getTookn";
 import defaultImage from "../../../../../public/defaultImage.png";
@@ -156,31 +157,22 @@ const AccessoriesPage = () => {
     }
 
 
-
-
-
-
     const [isEdit, setisEdit] = useState(false);
 
 
     //  handle accessrorise update function is here
-    const handleUpdateAccessories = (e, row) => {
+    const handleUpdateAccessories = async (e, row) => {
         e.preventDefault();
 
         setisEdit(true);
         setName(row?.name);
         setprice(row?.price);
         setdescription(row?.description);
-        setimg(row?.img);
+        const imges = await convertUrlsToBase64Single(row?.img);
+        setimg(imges);
         setrowID(row?._id);
-
-
         window.scrollTo(0, 0);
-
     }
-
-
-
 
 
     const handleaccessoriesUpdateerFinal = async (e, rowID) => {
@@ -226,15 +218,6 @@ const AccessoriesPage = () => {
 
 
 
-    console.log(allAccessories);
-
-
-
-
-
-
-
-
     if (isLoading) {
         return (
             <div className="h-screen flex justify-center items-center">
@@ -244,9 +227,6 @@ const AccessoriesPage = () => {
             </div>
         )
     }
-
-
-
 
 
     return (

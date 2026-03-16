@@ -1,9 +1,11 @@
 'use client'
 
+
 import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { addToCart } from '../lib/cartHelper';
 import Loading from "./Loading";
 
 export default function AccessoriesCard({ item }) {
@@ -17,9 +19,6 @@ export default function AccessoriesCard({ item }) {
 
 
 
-
-
-
     // handle view function is here
     const handleaddtoBasket = (e, item) => {
 
@@ -28,6 +27,7 @@ export default function AccessoriesCard({ item }) {
 
 
 
+        // accessory item object here
         const accessoryItem = {
             cartItemId: crypto.randomUUID(),
             productId: item?._id,              // your product's ID
@@ -42,25 +42,12 @@ export default function AccessoriesCard({ item }) {
 
 
 
+        // add to cart here
+        addToCart(accessoryItem);
 
-
-
-
-        const hasData = JSON.parse(localStorage.getItem("lensData"));
-
-        if (hasData === null) {
-            const finalData = [accessoryItem];
-            localStorage.setItem("lensData", JSON.stringify(finalData));
-        } else if (hasData.length === 0) {
-            const finalData = [item];
-            localStorage.setItem("lensData", JSON.stringify(finalData));
-        } else {
-            const finalData = [...hasData, item];
-            localStorage.setItem("lensData", JSON.stringify(finalData));
-        }
 
         // Trigger header update
-        window.dispatchEvent(new Event("lensUpdated"));
+        window.dispatchEvent(new Event("cartUpdated"));
         setTimeout(() => {
             setisLoading(false);
         }, 700);

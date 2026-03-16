@@ -10,6 +10,7 @@ import { FiPlus } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import Loading from "../../../components/Loading";
 import ProductBreadcrumb from "../../../components/ProductBreadcrumb";
+import { getCart, removeFromCart, updateQuantity } from '../../../lib/cartHelper';
 import getTookn from "../../../lib/getTookn";
 import getTotalPrice from "../../../lib/getTotalPrice";
 import verifyJWT from "../../../lib/verifyJWT";
@@ -31,7 +32,7 @@ export default function CartPage() {
     const { setStep } = useStepStore();
     const { setLens } = useLenseStore();
     const [isLoading, setIsLoading] = useState(false);
-    const [hasData, sethasData] = useState([]);
+    const [cart, setCart] = useState([]);
     const [isLogedIn, setIsLogedIn] = useState(false);
     const router = useRouter();
 
@@ -116,29 +117,63 @@ export default function CartPage() {
 
         loadUser();
 
-        sethasData(JSON.parse(localStorage.getItem("lensData")) || []);
+        const crt = getCart();
+        setCart(crt);
+
+
+        // listen for localStorage change
+        const handleStorageChange = () => {
+            const crt = getCart();
+            setCart(crt);
+        };
+
+        window.addEventListener("cartUpdateds", handleStorageChange);
+
         // Trigger header update
-        window.dispatchEvent(new Event("lensUpdated"));
+        window.dispatchEvent(new Event("cartUpdated"));
         window.scrollTo(0, 0);
+
+        return () => {
+            window.addEventListener("cartUpdateds", handleStorageChange);
+        };
+
     }, []);
 
 
 
-    // handle remove function is here
-    function handleRemoveItem(e, id) {
 
+    // handleincrement function is here
+    function handleIncrement(e, item) {
         e.preventDefault();
-
-
-        const filteredData = hasData?.filter((item) => item.ProductDetails?._id !== id);
-        localStorage.setItem("lensData", JSON.stringify(filteredData));
-        window.location.reload();
-
+        const cartID = item?.cartItemId;
+        const updateQ = item?.quantity + 1;
+        updateQuantity(cartID, updateQ);
+        window.dispatchEvent(new Event("cartUpdateds"));
     }
 
 
 
 
+    // handleincrement function is here
+    function handleDecrement(e, item) {
+        e.preventDefault();
+        const cartID = item?.cartItemId;
+        const updateQ = item?.quantity > 1 ? item?.quantity - 1 : 1;
+        updateQuantity(cartID, updateQ);
+        window.dispatchEvent(new Event("cartUpdateds"));
+    }
+
+
+
+
+    // remove Items function is here
+    function removeItems(e, item) {
+        e.preventDefault();
+        const cartID = item?.cartItemId;
+        removeFromCart(cartID);
+        window.dispatchEvent(new Event("cartUpdateds"));
+        window.dispatchEvent(new Event("cartUpdated"));
+    }
 
 
 
@@ -149,18 +184,12 @@ export default function CartPage() {
         e.preventDefault();
 
 
+        console.log(cart);
 
-        if (!hasData?.length) {
+        if (!cart?.items?.length) {
             toast.error("Please Add Product First");
             return;
         }
-
-        if (hasData?.length > 1) {
-            toast.error("You can Perchase Only One Product at a time");
-            return;
-        }
-
-
 
         if (!isLogedIn) {
             toast.error("You Must Login First to Checkout");
@@ -181,16 +210,9 @@ export default function CartPage() {
 
 
 
-
-    console.log(hasData);
-
-
-
-
-
     const TotalCalculation = (quantity) => {
         let priceTotal = 0;
-        hasData?.forEach((item) => {
+        cart?.items?.forEach((item) => {
             const thisQuantity = item.quantity;
             const thisGetTotal = getTotalPrice(item.total);
             priceTotal += thisGetTotal * thisQuantity;
@@ -200,47 +222,7 @@ export default function CartPage() {
     };
 
 
-
-    // handle quantity increase function is here
-    function handleIncrease(e, index) {
-
-        e.preventDefault();
-        const filteredData = hasData?.map((item, idx) => {
-            if (idx === index) {
-                return { ...item, quantity: item.quantity + 1 };
-            }
-            return item;
-        });
-        localStorage.setItem("lensData", JSON.stringify(filteredData));
-        window.location.reload();
-    }
-
-
-
-
-    // handle quantity decrease function is here
-    function handleDecrease(e, index) {
-
-        e.preventDefault();
-        const filteredData = hasData?.map((item, idx) => {
-            if (idx === index) {
-
-                if (item.quantity > 1) {
-                    return { ...item, quantity: item.quantity - 1 };
-                }
-            }
-            return item;
-        });
-        localStorage.setItem("lensData", JSON.stringify(filteredData));
-        window.location.reload();
-    }
-
-
-
-
-
-
-    console.log(hasData);
+    console.log(cart);
 
 
 
@@ -256,10 +238,10 @@ export default function CartPage() {
                 {/* CART ITEMS */}
                 <div className="lg:col-span-2 space-y-5 bg-white border border-gray-200">
                     <h1 className="text-2xl font-light text-gray-800 bg-white border-b p-3">
-                        Your Basket ({hasData?.length})
+                        Your Basket ({cart?.items?.length})
                     </h1>
 
-                    {hasData?.map((item, index) => (
+                    {cart?.items?.map((item, index) => (
                         <div
                             key={index}
                             className="bg-gray-50 m-3 md:m-6 border p-3 md:p-6 flex flex-col md:flex-row gap-6"
@@ -267,10 +249,8 @@ export default function CartPage() {
                             {/* IMAGE */}
                             <div className="w-20 md:w-40 shrink-0">
                                 <Image
-                                    src={item.ProductDetails?.product_Images[item?.selectedProductIndex
-                                    ] ? item.ProductDetails?.product_Images[item?.selectedProductIndex
-                                    ]?.img[0] : defaultImage}
-                                    alt={item.LenseName}
+                                    src={item?.image ? item?.image : defaultImage}
+                                    alt={item?.name}
                                     width={160}
                                     height={100}
                                     className="object-contain border border-gray-200 h-full w-full bg-white"
@@ -281,35 +261,33 @@ export default function CartPage() {
                             <div className="flex-1">
                                 <div className="flex justify-between">
                                     <div>
-                                        <span className="text-sm text-yellow-600">{item?.ProductDetails?.collection}</span>
                                         <h3 className="text-lg font-semibold text-gray-800">
-                                            {item?.LenseName}
+                                            {item?.name} {`(£${item?.price})`}
                                         </h3>
-                                        <p className="text-sm text-gray-600">{item?.ProductDetails?.shortdes}</p>
+                                        <p className="text-sm text-gray-600">{item?.description}</p>
                                     </div>
-                                    <button onClick={(e) => {
-                                        handleRemoveItem(e, item?.ProductDetails?._id)
-                                    }} className="h-7 w-7 flex items-center justify-center text-gray-400 bg-white border border-gray-100 hover:scale-110 transform duration-200">
+                                    <button onClick={(e) => { removeItems(e, item) }} className="h-7 w-7 flex items-center justify-center text-gray-400 bg-white border border-gray-100 hover:scale-110 transform duration-200">
                                         <RxCross2 className="text-2xl" />
                                     </button>
                                 </div>
 
                                 <div className="mt-2 flex justify-between w-full">
+
                                     <div className="mt-3 space-y-1 text-sm text-gray-600">
                                         <p>
-                                            <b>Frame Color : </b>
-                                            {item?.LenColor?.[0]?.name}</p>
+                                            <b>Product Type : </b>
+                                            {item?.type}</p>
                                     </div>
 
                                     <div className="mt-4 space-y-2 text-sm">
                                         <div className="flex items-center gap-1">
-                                            <div onClick={(e) => handleDecrease(e, index)} className="w-8 h-8 bg-gray-200 flex items-center justify-center cursor-pointer">
+                                            <div onClick={(e) => handleDecrement(e, item)} className="w-8 h-8 bg-gray-200 flex items-center justify-center cursor-pointer">
                                                 <FaMinus />
                                             </div>
-                                            <div className="w-8 h-8 bg-gray-200 flex items-center justify-center">
+                                            <div className="w-8 h-8 bg-gray-200 flex items-center justify-center select-none">
                                                 {item?.quantity}
                                             </div>
-                                            <div onClick={(e) => handleIncrease(e, index)} className="w-8 h-8 bg-gray-200 flex items-center justify-center cursor-pointer">
+                                            <div onClick={(e) => handleIncrement(e, item)} className="w-8 h-8 bg-gray-200 flex items-center justify-center cursor-pointer">
                                                 <FiPlus />
                                             </div>
                                         </div>
@@ -320,7 +298,7 @@ export default function CartPage() {
                         </div>
                     ))}
                     <div className="w-full px-6 pb-6 pt-0 flex items-center justify-end">
-                        <Link href="/shop" className="text-gray-600 text-md underline">Continue Shopping</Link>
+                        <Link href="/shop" className="text-gray-600 text-md underline text-yellow-600">Continue Shopping</Link>
                     </div>
                 </div>
 
@@ -328,30 +306,55 @@ export default function CartPage() {
                 <div className="bg-white border p-6 h-full sticky top-28">
 
                     <div className="flex flex-col justify-between h-full">
-                        <div>
+                        <div className="">
                             <h2 className="text-xl font-light mb-4">Summary</h2>
 
                             <p className="text-sm text-teal-600 mb-4">
                                 Enjoy free shipping
                             </p>
 
-                            <div className="space-y-3 text-sm">
-                                <div className="flex justify-between">
+                            <div className="text-sm h-full flex flex-col gap-4">
+                                <div className="flex justify-between h-fit border-b border-gray-100 pb-3">
                                     <span>Items:</span>
-                                    <span>{hasData?.length}</span>
+                                    <span>{cart?.totalItems}</span>
                                 </div>
-                                <div className="flex justify-between">
-                                    <span>Subtotal</span>
-                                    <span>£{TotalCalculation()}</span>
+
+                                <div className="h-fit">
+                                    <div className="flex flex-col gap-4 pb-4">
+                                        {
+                                            cart?.items?.map((item, index) => (
+                                                <div key={index} className="flex justify-between">
+                                                    <span className="flex items-center gap-2">
+                                                        <span>{index + 1}</span>
+                                                        <span>{item?.name}</span>
+                                                        <span className="flex items-center text-gray-400">
+                                                            <span>(£{item?.price}</span>
+                                                            <span className="rotate-90">
+                                                                <RxCross2 />
+                                                            </span>
+                                                            <span>{item?.quantity})</span>
+                                                        </span>
+                                                    </span>
+                                                    <span>
+                                                        {item?.price * item?.quantity}
+                                                    </span>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-4">
+                        <div className="mt-3">
+                            <div className="flex justify-between border-t border-gray-200 py-4">
+                                <span>Subtotal</span>
+                                <span>£{cart?.subtotal}</span>
+                            </div>
                             <hr />
                             <div className="flex justify-between font-semibold text-lg mt-4">
-                                <span>Order Total</span>
-                                <span>£{TotalCalculation()}</span>
+                                <span>Total</span>
+                                <span>£{cart?.subtotal}</span>
                             </div>
 
                             <button onClick={(e) => { handleProccedToCheckout(e) }} className="w-full mt-6 bg-yellow-700 text-white py-3 rounded-lg font-light transition flex items-center justify-center">

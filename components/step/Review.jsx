@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { addToCart } from '../../lib/cartHelper';
+import getTotalPrice from "../../lib/getTotalPrice";
 import useLenseStore from "../../store/useLenseStore";
 import useStepStore from "../../store/useStepStore";
 import Loading from "../Loading";
@@ -25,19 +27,31 @@ export default function Review() {
 
         setisLoading(true);
 
-        const hasData = JSON.parse(localStorage.getItem("lensData"));
+        console.log(lens);
 
-        if (hasData === null) {
-            const finalData = [lens];
-            localStorage.setItem("lensData", JSON.stringify(finalData));
-        } else if (hasData.length === 0) {
-            const finalData = [lens];
-            localStorage.setItem("lensData", JSON.stringify(finalData));
-        } else {
-            const finalData = [...hasData, lens];
-            localStorage.setItem("lensData", JSON.stringify(finalData));
+
+        // fream item object here
+        const freamItem = {
+            cartItemId: crypto.randomUUID(),
+            productId: lens?.ProductDetails?._id,              // your product's ID
+            type: lens?.ProductDetails?.productType,
+            name: lens?.ProductDetails?.ProductTitle,
+            price: getTotalPrice(lens?.total),
+            quantity: 1,
+            image: lens?.ProductDetails?.product_Images[lens?.selectedProductIndex]?.img[0],
+            description: lens?.ProductDetails?.product_Discription,
+            AllLensInfo: lens,
+            addedAt: new Date().toISOString(),
         }
 
+
+
+        // add to cart here
+        addToCart(freamItem);
+
+
+        // Trigger header update
+        window.dispatchEvent(new Event("cartUpdated"));
         setTimeout(() => {
             setisLoading(false);
             router.push('/basket');
