@@ -508,7 +508,7 @@ function PrescriptionInputer() {
                 ease: "easeOut"
             }}
 
-            className="max-w-3xl mx-auto p-4 md:p-6 bg-white border border-gray-200">
+            className="w-full p-4 md:p-6 bg-white border border-gray-200">
             {/* Header */}
             <div className="flex items-center justify-between">
                 <BackBtn step={step} setStep={setStep} />

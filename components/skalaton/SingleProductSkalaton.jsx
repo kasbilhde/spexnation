@@ -1,6 +1,6 @@
 const SingleProductSkalaton = () => {
     return (
-        <div className="animate-pulse max-w-7xl mx-auto py-12 p-4">
+        <div className="animate-pulse  py-12 p-4">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
                 {/* LEFT IMAGE SECTION */}
