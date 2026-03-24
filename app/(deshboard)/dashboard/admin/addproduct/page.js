@@ -81,7 +81,7 @@ const brands = [
     "Elite",
     "Ferucci",
     "Joia",
-    "MBOS",
+    "MB",
     "NHi",
     "Sightique",
     "SUNGLASSES",

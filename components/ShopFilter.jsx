@@ -284,7 +284,7 @@ const ShopFilter = ({ fopen, setfOpen, selectedBrand, setslectedBrand, selectedG
 
 
 
-                    <div className="mt-4">
+                    <div className="mt-4 hidden">
                         <h3 className="text-md text-gray-500 font-medium">
                             Frame Shape:
                         </h3>

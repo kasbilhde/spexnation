@@ -1,4 +1,3 @@
-import GlassesShowcase from '../../components/Glassesshowcase';
 import HeroBanner from '../../components/HeroBanner';
 import PopularGlasses from '../../components/PopularGlasses';
 import PromoTiles from '../../components/PromoTiles';
@@ -10,7 +9,7 @@ export default function Page() {
       <HeroBanner />
       <PopularGlasses />
       <PromoTiles />
-      <GlassesShowcase />
+      {/* <GlassesShowcase /> */}
     </main>
   )
 }

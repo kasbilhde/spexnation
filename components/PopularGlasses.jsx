@@ -49,7 +49,7 @@ export default function PopularGlasses() {
 
   return (
     <section className="bg-gray-100">
-      <section className="max-w-7xl mx-auto px-4 py-16">
+      <section className="px-4 md:px-6 py-6 pt-12">
         <h2 className="text-2xl sm:text-5xl font-light text-gray-900 text-center mb-12 text-gray-900">Best-Selling Frames</h2>
 
         {

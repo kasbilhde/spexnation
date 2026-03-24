@@ -62,16 +62,6 @@ export default function Header() {
 
 
 
-
-
-
-
-
-
-
-
-
-
   return (
     <>
       {/* Top Banner */}
@@ -87,8 +77,8 @@ export default function Header() {
 
       {/* Main Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-start gap-1">
+        <div className="px-4 md:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-1">
             {/* Logo */}
             <Link href="/" className="flex-shrink-0 flex items-center gap-2">
               <img src="/logo.png" alt="Spex Nation" className="h-6 sm:h-7 md:h-10 lg:h-12" />

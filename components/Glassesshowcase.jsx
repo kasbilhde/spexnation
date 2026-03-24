@@ -31,8 +31,8 @@ export default function GlassesShowcase() {
     ];
 
     return (
-        <section className="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
+        <section className="bg-gray-50 py-12 px-4 md:px-6">
+            <div className="w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                     {/* Left Content */}
                     <div className="space-y-8">

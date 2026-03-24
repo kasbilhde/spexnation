@@ -116,7 +116,7 @@ export default function HowToReadPrescription() {
                                 If your PD isn't on your prescription, learn how to measure it yourself.
                             </p>
                             <Link
-                                href="/how-to-measure-pd"
+                                href="/howtomeasureyourpd"
                                 className="inline-block bg-yellow-600 text-white text-[10px] font-bold uppercase tracking-widest px-4 py-2 hover:bg-gray-800 transition-colors"
                             >
                                 Measure Your PD

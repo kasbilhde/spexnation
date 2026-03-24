@@ -34,7 +34,7 @@ const ProductSapraratorDetailes = ({ single, index }) => {
 
                 <div className="border border-gray-100 bg-gray-100 px-3 py-2">
                     <label className="text-gray-800">
-                        Product Quentity:
+                        Product Quantity:
                     </label>
                     <span className="text-gray-500 pl-2">{single?.quantity}</span>
                 </div>
