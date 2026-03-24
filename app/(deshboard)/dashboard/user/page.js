@@ -82,7 +82,7 @@ const DashboardPage = () => {
     return (
         <div className="h-fit md:min-h-[85vh]">
             {/* Top Stats */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 mb-4 gap-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 mb-4 gap-4">
 
 
                 <div className="bg-white p-4 border flex items-center justify-center flex-col border-gray-200 h-[250px]">
@@ -96,10 +96,10 @@ const DashboardPage = () => {
                 </div>
 
 
-                <div className="bg-white p-4 border border-gray-200 h-[250px] flex items-center justify-center flex-col">
+                {/* <div className="bg-white p-4 border border-gray-200 h-[250px] flex items-center justify-center flex-col">
                     <p className="text-gray-500 text-md">My Total Expenses</p>
                     <h2 className="text-3xl font-bold mt-2">{dashbaord?.Mytotalexpenses}</h2>
-                </div>
+                </div> */}
 
             </div>
         </div>

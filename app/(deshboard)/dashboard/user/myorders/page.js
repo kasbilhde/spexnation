@@ -143,7 +143,7 @@ const MyOrderPage = () => {
                             <th className="p-3 border">Name</th>
                             <th className="p-3 border">Email</th>
                             <th className="p-3 border">Payment Status</th>
-                            <th className="p-3 border">Dalivary Status</th>
+                            <th className="p-3 border">Delivery Status</th>
                             <th className="p-3 border">Reorder</th>
                             <th className="p-3 border flex justify-center">Action</th>
                         </tr>

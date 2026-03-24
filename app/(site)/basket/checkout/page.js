@@ -37,11 +37,11 @@ export default function Checkout() {
 
 
     const [address1, setaddress1] = useState('');
-    const [address2, setaddress2] = useState('');
+    const [address2, setaddress2] = useState('.');
     const [city, setcity] = useState('');
     const [state, setstate] = useState('');
     const [zipcode, setzipcode] = useState('');
-    const [country, setcountry] = useState('');
+    const [country, setcountry] = useState('United Kingdom');
 
     const [couponCode, setCouponCode] = useState('');
     const [isApplyedShow, setisApplyedShow] = useState(false);
@@ -161,7 +161,7 @@ export default function Checkout() {
 
 
 
-        if (!fullname || !email || !address1 || !address2 || !city || !state || !zipcode || !country) {
+        if (!fullname || !email || !address1 || !city || !state || !zipcode || !country) {
             toast.error("Please fill all the fields.");
             return;
         }
@@ -219,13 +219,6 @@ export default function Checkout() {
     }
 
 
-
-
-    console.log(Cart);
-
-
-
-
     return (
         <section className="h-fit bg-gray-50 pt-3 pb-10">
 
@@ -274,7 +267,7 @@ export default function Checkout() {
 
                                 <div>
                                     <label className="text-gray-400 flex items-start gap-2">
-                                        Address Line 2 <span className="text-xs text-red-600">*</span>
+                                        Address Line 2
                                     </label>
                                     <input value={address2} onChange={(e) => setaddress2(e.target.value)} type="text" className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
                                     <span className="text-xs text-gray-400">Apartment, suite, unit, building, floor, etc.</span>
@@ -292,7 +285,8 @@ export default function Checkout() {
 
                                 <div>
                                     <label className="text-gray-400 flex items-start gap-2">
-                                        State/Province/Region <span className="text-xs text-red-600">*</span>
+                                        County <span className="text-xs text-red-600">*</span>
+                                        {/* State/Province/Region */}
                                     </label>
                                     <input value={state} onChange={(e) => setstate(e.target.value)} type="text" className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
                                 </div>
@@ -309,7 +303,7 @@ export default function Checkout() {
                                     <label className="text-gray-400 flex items-start gap-2">
                                         Country <span className="text-xs text-red-600">*</span>
                                     </label>
-                                    <input value={country} onChange={(e) => setcountry(e.target.value)} type="text" className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
+                                    <input disabled value={country} onChange={(e) => setcountry(e.target.value)} type="text" className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
                                 </div>
 
                             </div>

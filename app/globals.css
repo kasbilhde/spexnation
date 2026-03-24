@@ -51,7 +51,7 @@ html {
 }
 
 .forMan {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.482), rgba(0, 0, 0, 0)), url("../public/forman.webp");
+  background: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("../public/mensPromoTitle.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -59,7 +59,18 @@ html {
 }
 
 .forwoman {
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.482), rgba(0, 0, 0, 0)), url("../public/forwoman.webp");
+  background: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("../public/WomensPromoTitle.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* border-radius: 5px; */
+
+}
+
+
+
+.foraccessories {
+  background: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("../public/foraccessories.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

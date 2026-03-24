@@ -43,7 +43,7 @@ const ProductCardSkeleton = () => {
 
 const ProductGridSkeleton = () => {
     return (
-        <div className="w-full max-w-7xl mx-auto py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4 gap-6">
+        <div className="w-full  py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4 gap-6">
             {Array.from({ length: 8 }).map((_, i) => (
                 <ProductCardSkeleton key={i} />
             ))}
