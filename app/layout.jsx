@@ -1,6 +1,8 @@
 import { Arimo } from 'next/font/google';
 import Script from "next/script";
+import PathTrackerComponnent from "../components/PathTrackerComponnent";
 import './globals.css';
+
 
 const arimo = Arimo({
   subsets: ['latin'],
@@ -14,6 +16,9 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }) {
+
+
+
   return (
     <html lang="en">
 
@@ -34,9 +39,9 @@ export default function RootLayout({ children }) {
         `}
       </Script>
 
-
       <body className={`${arimo.className} antialiased`} suppressHydrationWarning>
         {children}
+        <PathTrackerComponnent />
       </body>
     </html>
   )

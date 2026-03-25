@@ -42,11 +42,6 @@ export default function PopularGlasses() {
 
 
 
-  console.log(allProducts);
-
-
-
-
   return (
     <section className="bg-gray-100">
       <section className="px-4 md:px-6 py-6 pt-12">

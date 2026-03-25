@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from "react";
 import { Autoplay, EffectFade } from 'swiper/modules';
@@ -13,7 +14,14 @@ import 'swiper/css/effect-fade';
 
 export default function HeroSlider() {
     const swiperRef = useRef(null);
-    const [allBanner, setallBanner] = useState([]);
+    const [allBanner, setallBanner] = useState([
+        {
+            productType: "banner",
+            Route: "/shop",
+            img: "/HeroBanner.png",
+
+        }
+    ]);
     const [IsLoading, setIsLoading] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
 
@@ -50,8 +58,13 @@ export default function HeroSlider() {
     }, [])
 
 
+
+
+    console.log(allBanner);
+
+
     return (
-        <section className="relative w-full h-[240px] md:h-[65vh] overflow-hidden">
+        <section className="relative w-full h-fit overflow-hidden">
 
             <Swiper
                 key={allBanner.length}   // 👈 important
@@ -108,53 +121,12 @@ function SlideContent({ slide, isActive }) {
     });
 
     return (
-        <Link href={slide?.Route} style={{ backgroundImage: `url(${slide.img})` }} className={`w-full h-full bg-gray-200 flex items-center overflow-hidden bg-cover md:bg-cover bg-no-repeat bg-center`}>
-
-            {/* Text content */}
-            {/* <div className="relative z-10 w-full max-w-7xl mx-auto px-4">
-                <div className="max-w-lg">
-                    {!isActive && (
-                        <>
-
-                            <motion.h2
-                                className="text-4xl md:text-5xl font-light leading-[1.1] text-gray-100 mb-5 tracking-tight"
-                                variants={stagger(1)} initial="hidden" animate="visible"
-                            >
-                                {slide.title}
-                            </motion.h2>
-
-                            <motion.p
-                                className="text-base md:text-lg text-gray-400 font-light leading-relaxed mb-6"
-                                variants={stagger(2)} initial="hidden" animate="visible"
-                            >
-                                {slide.subtitle}
-                            </motion.p>
+        <Link href={slide?.Route} className={`w-full h-fit bg-gray-200 flex items-center overflow-hidden`}>
 
 
-
-                            <motion.div
-                                variants={stagger(3)} initial="hidden" animate="visible"
-                                className="mt-8 flex flex-col flex-wrap gap-2 mb-8 justify-center md:justify-start opacity-90 text-white">
-                                <div className="text-md">
-                                    <span className='font-light'>Incredible Eyewear, Incredible Prices</span>
-                                </div>
-                                <div className="text-md font-light">Free UK Delivery</div>
-                            </motion.div>
+            <Image src={slide?.img} alt={"Hero Banner Image"} width={0} height={0} sizes="100vw" className="w-full h-full object-cover" />
 
 
-                            <motion.div variants={stagger(4)} initial="hidden" animate="visible">
-                                <Link
-                                    href={slide.link}
-                                    className={`text-white font-light px-6 py-3 rounded transition flex items-center justify-center gap-2 pBg w-fit`}
-                                >
-                                    Shop Now
-                                    <ArrowRight size={15} />
-                                </Link>
-                            </motion.div>
-                        </>
-                    )}
-                </div>
-            </div> */}
         </Link >
     );
 }

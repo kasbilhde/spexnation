@@ -16,8 +16,6 @@ export default function ProductTabs({ product, activeIndex, selectedImage }) {
 
 
 
-  console.log(product);
-
 
   return (
     <div className="space-y-8 mt-6 bg-white p-4 border border-gray-200">

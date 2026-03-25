@@ -51,16 +51,16 @@ html {
 }
 
 .forMan {
-  background: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("../public/mensPromoTitle.jpg");
-  background-position: center;
+  background: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("../public/mensPromoTitle.png");
+  background-position: top center;
   background-repeat: no-repeat;
   background-size: cover;
 
 }
 
 .forwoman {
-  background: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("../public/WomensPromoTitle.jpg");
-  background-position: center;
+  background: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("../public/WomensPromoTitle.png");
+  background-position: top center;
   background-repeat: no-repeat;
   background-size: cover;
   /* border-radius: 5px; */
@@ -70,7 +70,7 @@ html {
 
 
 .foraccessories {
-  background: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("../public/foraccessories.jpg");
+  background: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)), url("../public/foraccessories.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

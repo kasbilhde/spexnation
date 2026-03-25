@@ -9,7 +9,7 @@ import { GoPlusCircle } from "react-icons/go";
 import { RxCross2 } from "react-icons/rx";
 import Loading from "../../../../../components/Loading";
 import clearFileInput from "../../../../../lib/clearFileInput";
-import convertUrlsToBase64Single from "../../../../../lib/convertUrlsToBase64Single";
+import convertUrlsToBase64 from "../../../../../lib/convertUrlsToBase64";
 import fileToBase64 from "../../../../../lib/fileToBase64";
 import getTookn from "../../../../../lib/getTookn";
 import defaultImage from "../../../../../public/defaultImage.png";
@@ -25,7 +25,7 @@ const AccessoriesPage = () => {
     const [price, setprice] = useState(0);
     const [description, setdescription] = useState('');
     const [allAccessories, setallAccessories] = useState([]);
-    const [img, setimg] = useState('');
+    const [img, setimg] = useState([]);
     const [rowID, setrowID] = useState('');
 
 
@@ -141,19 +141,22 @@ const AccessoriesPage = () => {
     // handle prescription file changes is here
     async function handleImageChange(e) {
 
-        const file = e.target.files[0];
-        const base64 = await fileToBase64(file);
-        setimg(base64);
-
+        const files = e.target.files;
+        const base64Images = [];
+        for (const file of files) {
+            const base64 = await fileToBase64(file);
+            base64Images.push(base64);
+        }
+        setimg(prev => [...prev, ...base64Images]);
     }
 
 
 
     // handle remove function is here
-    function handleRemovedImage(e) {
+    function handleRemovedImage(e, index) {
         e.preventDefault();
         clearFileInput(fileInputRef);
-        setimg('');
+        setimg(prev => prev.filter((_, i) => i !== index));
     }
 
 
@@ -168,8 +171,9 @@ const AccessoriesPage = () => {
         setName(row?.name);
         setprice(row?.price);
         setdescription(row?.description);
-        const imges = await convertUrlsToBase64Single(row?.img);
-        setimg(imges);
+        // Wait for all images to convert
+        const updateImageBase = await convertUrlsToBase64(row?.img);
+        setimg(updateImageBase);
         setrowID(row?._id);
         window.scrollTo(0, 0);
     }
@@ -229,11 +233,22 @@ const AccessoriesPage = () => {
     }
 
 
+
+
+
+
+
+    console.log(allAccessories);
+
+
+
+
+
     return (
         <div className=" bg-white py-4 px-5  border border-gray-200">
             <h1 className="text-xl font-medium text-gray-600">Accessories</h1>
 
-            <div className="mt-4  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
 
                 <div>
                     <label className="text-gray-400 flex items-start gap-1">
@@ -249,13 +264,18 @@ const AccessoriesPage = () => {
                     <input type="number" value={price} onChange={(e) => setprice(e.target.value)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
                 </div>
 
+            </div >
 
+            <div>
                 <div>
                     <label className="text-gray-400 flex items-start gap-1">
                         Accessories Discriptions <span className="text-md text-red-600">*</span>
                     </label>
-                    <input type="text" value={description} onChange={(e) => setdescription(e.target.value)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
+                    <textarea value={description} onChange={(e) => setdescription(e.target.value)} className="w-full border border-gray-300 p-2 h-[140px] focus:outline-none focus:ring-2 focus:ring-yellow-600"></textarea>
                 </div>
+
+
+
 
                 <div>
                     <div className="">
@@ -266,47 +286,52 @@ const AccessoriesPage = () => {
                             <span className="text-[10px] bg-yellow-100  px-1 w-fit">jpg, jpeg, png and webp files are allowed</span>
                         </label>
                         <div className="flex items-center gap-2 mt-2 h-full">
-                            <input
+
+
+                            {
+                                img?.length > 0 && (
+                                    img?.map((item, i) => (
+                                        <div key={i}>
+                                            <div className="relative w-auto h-[60px] md:h-[100px] border border-gray-200 text-gray-500/40 bg-gray-200">
+
+                                                <Image className="w-full h-full object-cover" src={item ? item : defaultImage} width={100} height={1000} alt="prescription" />
+
+
+                                                <div onClick={(e) => { handleRemovedImage(e, i) }} className="absolute top-0 right-0 w-4 h-4 bg-yellow-600 text-white translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center cursor-pointer">
+                                                    <RxCross2 />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+
+                                )
+                            }
+
+                            < input
                                 id="file2"
                                 ref={fileInputRef}
                                 type="file"
                                 accept=".png,.jpg,.jpeg,.webp"
+                                multiple
                                 onChange={(e) => { handleImageChange(e) }}
                                 className="hidden w-full border p-2 rounded-md focus:outline-yellow-500/60 text-gray-700/80 cursor-pointer"
                             />
 
-                            {
-                                img ? (
-
-                                    <div>
-                                        <div className="relative w-auto h-[60px] md:h-[100px] border border-gray-200 text-gray-500/40 bg-gray-200">
-
-                                            <Image className="w-full h-full object-cover" src={img ? img : defaultImage} width={100} height={1000} alt="prescription" />
-
-
-                                            <div onClick={(e) => { handleRemovedImage(e) }} className="absolute top-0 right-0 w-4 h-4 bg-yellow-600 text-white translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center cursor-pointer">
-                                                <RxCross2 />
-                                            </div>
-                                        </div>
+                            <div className="flex items-center gap-2">
+                                <label htmlFor="file2">
+                                    <div className="flex items-center gap-2 justify-center flex-col cursor-pointer w-full h-full border border-gray-200 bg-gray-100 p-2">
+                                        <GoPlusCircle className="text-5xl text-gray-300" />
                                     </div>
+                                </label>
+                            </div>
 
-                                ) : (
 
-                                    <div className="flex items-center gap-2">
-                                        <label htmlFor="file2">
-                                            <div className="flex items-center gap-2 justify-center flex-col cursor-pointer w-full h-full border border-gray-200 bg-gray-100 p-2">
-                                                <GoPlusCircle className="text-5xl text-gray-300" />
-                                            </div>
-                                        </label>
-                                    </div>
-                                )
-                            }
 
                         </div>
                     </div>
                 </div >
 
-            </div >
+            </div>
 
 
             <div className="flex justify-end">
@@ -339,7 +364,7 @@ const AccessoriesPage = () => {
                                     <th className="p-3 border">Image</th>
                                     <th className="p-3 border">Accessories Name</th>
                                     <th className="p-3 border">Accessories Price</th>
-                                    <th className="p-3 border">Accessories Disscription</th>
+                                    {/* <th className="p-3 border">Accessories Disscription</th> */}
                                     <th className="p-3 border">Action</th>
                                 </tr>
                             </thead>
@@ -353,8 +378,8 @@ const AccessoriesPage = () => {
                                         </td>
 
                                         <td className="p-2 border text-center text-gray-500 flex justify-center items-center">
-                                            <div className="bg-gray-100 w-[80px] h-[80px]">
-                                                <Image src={row?.img} alt="accessoriseImage" className="w-full h-full" width="1000" height="1000" />
+                                            <div className="">
+                                                <Image src={row?.img[0]} alt="accessoriseImage" className="w-[100px] h-auto" width="1000" height="1000" />
                                             </div>
                                         </td>
 
@@ -367,9 +392,9 @@ const AccessoriesPage = () => {
                                             {row?.price}
                                         </td>
 
-                                        <td className="p-2 border text-center text-gray-500">
+                                        {/* <td className="p-2 border text-center text-gray-500">
                                             {row?.description}
-                                        </td>
+                                        </td> */}
 
                                         <td className="p-2 border-b text-center text-gray-500">
 

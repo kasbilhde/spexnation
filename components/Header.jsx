@@ -23,11 +23,6 @@ export default function Header() {
 
 
 
-
-
-
-
-
   useEffect(() => {
 
     let isMounted = true;
@@ -54,11 +49,16 @@ export default function Header() {
 
     loadUser();
 
+    const handler = () => loadUser();
+    window.addEventListener("authChanged", handler);
+
     return () => {
       isMounted = false; // cleanup
+      window.removeEventListener("authChanged", handler)
     };
 
-  }, []);
+  }, [isLogedIn]);
+
 
 
 
@@ -105,7 +105,7 @@ export default function Header() {
                 Womens
               </Link>
 
-              <Link href="/accessories" className={`${pathName == "/accessories" ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
+              <Link href="/accessories" className={`${pathName?.startsWith("/accessories") ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
                 Accessories
               </Link>
 

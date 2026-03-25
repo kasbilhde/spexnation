@@ -1,6 +1,7 @@
 'use client'
 
 import { Facebook, Instagram, Link as LinkIcon, Music, Twitter } from 'lucide-react';
+import Link from "next/link";
 
 
 export default function Footer() {
@@ -10,7 +11,7 @@ export default function Footer() {
       <div className="bg-gray-900 py-6 border-b border-yellow-900/70">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row gap-4 items-center justify-center">
           <p className="text-lg text-center">
-            Be the first to hear about exclusive offers and new collections from Spex Nation.
+            Be the first to hear about exclusive offers and new collections from <Link className="sCl" href="/signup">SpexNation</Link>
           </p>
 
           {/* <div className="flex gap-2 w-full sm:w-auto">
@@ -52,7 +53,7 @@ export default function Footer() {
 
           {/* Column 3 */}
           <div>
-            <h4 className="font-bold mb-4 sCl">INFORMATIONS</h4>
+            <h4 className="font-bold mb-4 sCl">INFORMATION</h4>
             <ul className="space-y-2 text-md">
               <li><a href="/prescriptiondisclaimer" className="hover:text-yellow-300 transition">Prescription Disclaimer</a></li>
               <li><a href="/howtoreadyourprescription" className="hover:text-yellow-300 transition">How to Read Your Prescription</a></li>
