@@ -119,7 +119,7 @@ export default function Footer() {
           </div>
 
           <p className="text-center md:text-right text-md font-light text-gray-400">
-            © 2024 Spex Nation. All rights reserved. Premium eyewear for the discerning eye.
+            © 2026 SpexNation. All rights reserved. Premium eyewear for the discerning eye.
           </p>
         </div>
       </div>
