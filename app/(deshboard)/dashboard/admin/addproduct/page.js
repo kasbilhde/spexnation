@@ -353,8 +353,6 @@ const AddproductPage = () => {
 
 
 
-    console.log(gellary);
-
 
     return (
         <div className="bg-white py-4 px-5  border border-gray-200">

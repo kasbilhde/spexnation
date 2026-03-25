@@ -6,10 +6,12 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import Loading from "../../../../components/Loading";
 import setCookie from "../../../../lib/setcookie";
+import useRouteStore from '../../../../store/useRouteStore';
 
 export default function SignInPage() {
 
     const router = useRouter();
+    const { prevRoute } = useRouteStore();
     const [loading, setloading] = useState(false);
     const [formData, setFormData] = useState({
         email: "",
@@ -45,14 +47,22 @@ export default function SignInPage() {
                 email: "",
                 password: ""
             });
-            router.push('/dashboard/user');
+            if (res?.data?.role === "admin") {
+                router.push('/dashboard/admin');
+            } else {
+                window.dispatchEvent(new Event("authChanged"));
+                if (prevRoute == "/basket") {
+                    router.push('/basket');
+                } else {
+                    router.push('/');
+                }
+            }
+
         } else {
             toast.error(res.message);
         }
 
         setloading(false);
-
-
 
 
     };

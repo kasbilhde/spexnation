@@ -35,7 +35,7 @@ export async function proxy(req) {
     //  Prevent logged user going to signin
     if (decoded && path.startsWith("/signin")) {
 
-        return NextResponse.redirect(new URL("/dashboard", req.url));
+        return NextResponse.redirect(new URL("/dashboard/admin", req.url));
     }
 
 
@@ -43,8 +43,6 @@ export async function proxy(req) {
 
         return NextResponse.redirect(new URL("/signin", req.url));
     }
-
-
 
 
     //  when user sign in as a admin and try to access user route

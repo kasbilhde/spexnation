@@ -222,9 +222,6 @@ export default function CartPage() {
     };
 
 
-    console.log(cart);
-
-
 
     return (
         <section className="h-fit bg-gray-50 pt-3 pb-10">
@@ -274,9 +271,20 @@ export default function CartPage() {
                                 <div className="mt-2 flex justify-between w-full">
 
                                     <div className="mt-3 space-y-1 text-sm text-gray-600">
-                                        <p>
-                                            <b>Product Type : </b>
-                                            {item?.type}</p>
+                                        <p><b>Product Type : </b> {item?.type}</p>
+
+                                        {
+                                            item?.type === "Frame" && (
+                                                <>
+                                                    <div className="flex items-center gap-2"><b>Frame Colour :</b>
+                                                        <span>{item?.AllLensInfo?.LenColor[0]?.name}</span>
+                                                        <div style={{ backgroundColor: item?.AllLensInfo?.LenColor[0]?.value }} className='h-5 w-5' />
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+
+
                                     </div>
 
                                     <div className="mt-4 space-y-2 text-sm">

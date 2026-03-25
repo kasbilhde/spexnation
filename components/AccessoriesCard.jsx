@@ -5,7 +5,6 @@ import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { addToCart } from '../lib/cartHelper';
 import Loading from "./Loading";
 
 export default function AccessoriesCard({ item }) {
@@ -19,41 +18,16 @@ export default function AccessoriesCard({ item }) {
 
 
 
-    // handle view function is here
-    const handleaddtoBasket = (e, item) => {
-
+    // handle explore accessories function is here
+    const handleExploreAccessorires = (e, item) => {
         e.preventDefault();
+
         setisLoading(true);
-
-
-
-        // accessory item object here
-        const accessoryItem = {
-            cartItemId: crypto.randomUUID(),
-            productId: item?._id,              // your product's ID
-            type: item?.productType,
-            name: item?.name,
-            price: item?.price,
-            quantity: 1,
-            image: item?.img,
-            description: item?.description,
-            addedAt: new Date().toISOString(),
-        }
-
-
-
-        // add to cart here
-        addToCart(accessoryItem);
-
-
-        // Trigger header update
-        window.dispatchEvent(new Event("cartUpdated"));
         setTimeout(() => {
             setisLoading(false);
+            router.push(`/accessories/${item?._id}`);
         }, 700);
     }
-
-
 
 
 
@@ -64,7 +38,7 @@ export default function AccessoriesCard({ item }) {
             {/* Image Container */}
             <div className="relative overflow-hidden bg-white p-4">
                 <Image
-                    src={item?.img}
+                    src={item?.img[0]}
                     alt={item?.productType + " " + item?.name}
                     width={1000}
                     height={1000}
@@ -98,7 +72,7 @@ export default function AccessoriesCard({ item }) {
                 <div
                 >
                     <button
-                        onClick={(e) => { handleaddtoBasket(e, item) }}
+                        onClick={(e) => { handleExploreAccessorires(e, item) }}
                         className="pBg text-white font-light px-6 py-3 transition flex items-center justify-center gap-2 w-full"
                     >
 
@@ -108,7 +82,7 @@ export default function AccessoriesCard({ item }) {
                                 <Loading />
                             ) : (
                                 <>
-                                    Add to Basket < ArrowRight className="" size={18} />
+                                    Explore < ArrowRight className="" size={18} />
                                 </>
                             )
                         }

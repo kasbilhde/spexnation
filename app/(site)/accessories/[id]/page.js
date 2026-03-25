@@ -2,28 +2,27 @@
 
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import AccessoriesMainBox from '../../../../components/AccessoriesMainBox'
+import AccessoriesTabs from '../../../../components/AccessoriesTabs'
 import Container from '../../../../components/Container'
 import ProductBreadcrumb from '../../../../components/ProductBreadcrumb'
-import ProductTabs from '../../../../components/ProductTabs'
 import SingleProductSkalaton from "../../../../components/skalaton/SingleProductSkalaton"
-import ProductMainFeature from '../../../../components/step/ProductMainFeature'
 
 
-export default function ProductPage() {
-
+const SingleAccessoriesPage = () => {
 
 
     const { id } = useParams();
     const [loading, setLoading] = useState(true);
-    const [singleProducts, setsingleProducts] = useState([]);
+    const [singleAccessories, setsingleAccessories] = useState([]);
     const [activeIndex, setactiveIndex] = useState(0);
     const [selectedImage, setSelectedImage] = useState(0);
 
 
-    const fetchProducts = async (id) => {
+    const fetchAccessories = async (id) => {
         try {
             // Make API call to get all the product
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/singleProduct/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/singleaccessories/${id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -31,31 +30,28 @@ export default function ProductPage() {
             });
 
             const res = await response.json();
-            setsingleProducts(res?.data);
+            setsingleAccessories(res?.data);
             setTimeout(() => {
                 setLoading(false);
             }, 1000);
         } catch (error) {
-            console.error('Error fetching products:', error);
+            console.error('Error fetching Accessories:', error);
             setLoading(false);
         }
     };
 
 
     useEffect(() => {
-        fetchProducts(id);
+        fetchAccessories(id);
         window.scrollTo(0, 0);
     }, [id])
 
 
-
-
     const breadcrumbs = [
         { label: 'Home', href: '/' },
-        { label: 'Shop', href: '/shop' },
-        { label: singleProducts?.ProductTitle, href: `/shop/${singleProducts?._id}` },
+        { label: 'Accessories', href: '/accessories' },
+        { label: singleAccessories?.name, href: `/accessories/${singleAccessories?._id}` },
     ]
-
 
 
     if (loading) {
@@ -64,16 +60,19 @@ export default function ProductPage() {
 
 
 
-
     return (
         <main className="min-h-screen bg-gray-50">
 
             <Container>
                 <ProductBreadcrumb breadcrumbs={breadcrumbs} />
-                <ProductMainFeature product={singleProducts} activeIndex={activeIndex} setactiveIndex={setactiveIndex} selectedImage={selectedImage} setSelectedImage={setSelectedImage} />
-                <ProductTabs product={singleProducts} activeIndex={activeIndex} selectedImage={selectedImage} />
+                <div>
+                    <AccessoriesMainBox product={singleAccessories} />
+                    <AccessoriesTabs product={singleAccessories} />
+                </div>
             </Container>
 
         </main>
     )
 }
+
+export default SingleAccessoriesPage;
