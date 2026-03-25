@@ -1,5 +1,6 @@
 'use client'
 
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -101,9 +102,6 @@ const OrderPage = () => {
     }
 
 
-    console.log(getSingleOrders);
-
-
     return (
         <div className=" bg-white py-5 px-5  border border-gray-200">
             <div className="flex items-center justify-between">
@@ -117,9 +115,9 @@ const OrderPage = () => {
                     </h1>
                 </div>
                 <div className="flex items-center gap-4">
-                    <button disabled={getSingleOrders?.paymentStatus != "paid"} onClick={() => { router.back() }} className={` bg-gray-200 px-2 py-1 text-white bg-yellow-700 items-center gap-1 ${getSingleOrders?.paymentStatus === "paid" ? " flex" : " hidden"} `}>
+                    <Link href={String(getSingleOrders?.pdf)} target="_blank" className={` bg-gray-200 px-2 py-1 text-white bg-yellow-700 items-center gap-1 ${getSingleOrders?.paymentStatus === "paid" ? " flex" : " hidden"} `}>
                         PDF File
-                    </button>
+                    </Link>
                 </div>
             </div>
             <div className="mt-6 ">
