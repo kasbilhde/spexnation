@@ -37,6 +37,7 @@ export default function Footer() {
             <ul className="space-y-2 text-md">
               <li><a href="/mens" className="hover:text-yellow-300 transition">Men's Frames</a></li>
               <li><a href="/womens" className="hover:text-yellow-300 transition">Women's Frames</a></li>
+              <li><a href="/sunglasses" className="hover:text-yellow-300 transition">Sunglasses</a></li>
               <li><a href="/accessories" className="hover:text-yellow-300 transition">Accessories</a></li>
             </ul>
           </div>

@@ -22,7 +22,7 @@ export default function HeroSlider() {
 
         }
     ]);
-    const [IsLoading, setIsLoading] = useState(false);
+    const [IsLoading, setIsLoading] = useState(true);
     const [activeIndex, setActiveIndex] = useState(0);
 
     const goTo = (index) => {
@@ -33,7 +33,6 @@ export default function HeroSlider() {
 
 
     const fetchAccessories = async () => {
-        setIsLoading(true);
         try {
             // Make API call to get all the product
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/allbanner`, {
@@ -60,6 +59,7 @@ export default function HeroSlider() {
 
 
 
+
     console.log(allBanner);
 
 
@@ -80,7 +80,7 @@ export default function HeroSlider() {
             >
                 {allBanner.map((slide) => (
                     <SwiperSlide key={slide.id}>
-                        {({ isActive }) => <SlideContent slide={slide} isActive={isActive} />}
+                        {({ isActive }) => <SlideContent slide={slide} isActive={isActive} IsLoading={IsLoading} />}
                     </SwiperSlide>
                 ))}
             </Swiper>
@@ -110,7 +110,7 @@ export default function HeroSlider() {
 
 /* ─── Individual slide ──────────────────────────────────────── */
 
-function SlideContent({ slide, isActive }) {
+function SlideContent({ slide, isActive, IsLoading }) {
     const stagger = (i) => ({
         hidden: { opacity: 0, y: 26 },
         visible: {
@@ -120,11 +120,19 @@ function SlideContent({ slide, isActive }) {
         },
     });
 
+
+    const ssss = {
+        productType: "banner",
+        Route: "/shop",
+        img: "/HeroBanner.png",
+    }
+
+
     return (
-        <Link href={slide?.Route} className={`w-full h-fit bg-gray-200 flex items-center overflow-hidden`}>
+        <Link href={IsLoading ? ssss?.Route : slide?.Route} className={`w-full h-fit bg-gray-200 flex items-center overflow-hidden`}>
 
 
-            <Image src={slide?.img} alt={"Hero Banner Image"} width={0} height={0} sizes="100vw" className="w-full h-full object-cover" />
+            <Image src={IsLoading ? ssss?.img : slide?.img} alt={"Hero Banner Image"} width={0} height={0} sizes="100vw" className="w-full h-full object-cover" />
 
 
         </Link >

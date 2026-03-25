@@ -104,22 +104,13 @@ const ProductSapraratorDetailes = ({ single, index }) => {
                     Product Image:
                 </label>
                 <div className={`w-[150px] h-auto`}>
-                    <Image src={single?.image} alt="placeholder" width={1000} height={1000} />
+                    <Image src={single?.type === "Frame" ? single?.image : single?.image[0]} alt="placeholder" width={1000} height={1000} />
                 </div>
             </div>
             {
                 single?.type === "Frame" && (
 
                     <div className="mt-6">
-
-
-
-
-
-
-
-
-
 
 
 
