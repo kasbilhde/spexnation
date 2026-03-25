@@ -105,6 +105,10 @@ export default function Header() {
                 Womens
               </Link>
 
+              <Link href="/sunglasses" className={`${pathName == "/sunglasses" ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
+                Sunglasses
+              </Link>
+
               <Link href="/accessories" className={`${pathName?.startsWith("/accessories") ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
                 Accessories
               </Link>
@@ -163,6 +167,11 @@ export default function Header() {
 
             <Link onClick={() => setIsOpen(!isOpen)} href="/womens" className="text-gray-600 hover:text-yellow-700 text-lg font-light">
               Womens
+            </Link>
+
+
+            <Link onClick={() => setIsOpen(!isOpen)} href="/sunglasses" className="text-gray-600 hover:text-yellow-700 text-lg font-light">
+              Sunglasses
             </Link>
 
             <Link onClick={() => setIsOpen(!isOpen)} href="/accessories" className="text-gray-600 hover:text-yellow-700 text-lg font-light">
