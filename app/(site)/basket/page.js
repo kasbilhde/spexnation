@@ -246,7 +246,7 @@ export default function CartPage() {
                             {/* IMAGE */}
                             <div className="w-20 md:w-40 shrink-0">
                                 <Image
-                                    src={item?.image ? item?.image : defaultImage}
+                                    src={item?.image ? (item?.type === "Frame" ? item?.image : item?.image[0]) : defaultImage}
                                     alt={item?.name}
                                     width={160}
                                     height={100}
