@@ -133,7 +133,7 @@ const AddproductPage = () => {
 
 
 
-        if (!brand || !title || !shortdes || !price || !description || gellary.length < 1) {
+        if (!brand || !title || !shortdes || !price || !fType || !description || gellary.length < 1) {
 
             toast.error('Please fill in all the required fields.');
             return;
@@ -445,7 +445,7 @@ const AddproductPage = () => {
 
                         <div>
                             <label className="text-gray-400 flex items-start gap-2">
-                                Frame Type
+                                Frame Type <span className="text-xs text-red-600">Required</span>
                             </label>
                             <select value={fType} onChange={(e) => setfType(e.target.value)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600">
                                 <option className="text-gray-400 checked:text-gray-400" value="">Select Frame Type</option>

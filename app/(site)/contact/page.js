@@ -124,7 +124,6 @@ export default function ContactPage() {
                                 name="oid"
                                 value={formData.oid}
                                 onChange={handleChange}
-                                required
                                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-600"
                                 placeholder="OID-9087"
                             />

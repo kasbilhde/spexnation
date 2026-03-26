@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import Loading from "../../../../../components/Loading";
 import dateAndTimeFormate from "../../../../../lib/dateAndTimeFormate";
 import getTookn from "../../../../../lib/getTookn";
@@ -9,12 +9,10 @@ import getTookn from "../../../../../lib/getTookn";
 const UserPage = () => {
 
 
-
-
-
     const [loading, setLoading] = useState(false);
     const [allUsers, setallUsers] = useState([]);
     const [search, setsearch] = useState('');
+    const [tk, settk] = useState(null);
     const [updateStatus, setupdateStatus] = useState(false);
 
     const fetchUsers = async (token) => {
@@ -41,11 +39,56 @@ const UserPage = () => {
 
     useEffect(() => {
         const token = getTookn();
+        settk(token);
         fetchUsers(token);
     }, [])
 
 
 
+
+
+
+
+
+    // hanlde change role funciton is here
+    const handleChangeRole = async (e, id, role) => {
+        e.preventDefault();
+
+        try {
+            // Make API call to get all the product
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "authorization": `Bearer ${tk}`,
+                },
+                body: JSON.stringify({ role: role })
+            });
+
+            const res = await response.json();
+            if (res?.success) {
+                toast.success(res?.message);
+                fetchUsers(tk);
+            } else {
+                toast.error(res?.message);
+            }
+
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    // filter by Email address
     const filterData = allUsers?.filter((item) => {
 
         if (!search) {
@@ -57,6 +100,18 @@ const UserPage = () => {
             .toLowerCase()
             .includes(search.toLowerCase());
     });
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -74,8 +129,6 @@ const UserPage = () => {
 
 
 
-
-
     return (
         <div className=" bg-white py-5 px-5  border border-gray-200">
             <div className="flex items-center justify-between">
@@ -83,13 +136,14 @@ const UserPage = () => {
                 <input onChange={(e) => setsearch(e.target.value)} placeholder="Search By Email" text="text" className="border border-gray-200 px-3 py-1 text-sm text-gray-400 cursor-pointer focus:outline-none" />
             </div>
             <div className="mt-6 overflow-x-auto">
-                <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
+                <table className="w-full border border-gray-200 rounded-lg">
                     <thead className="bg-gray-100 ">
                         <tr className="text-center">
                             <th className="p-3 border">Sl</th>
                             <th className="p-3 border">Name</th>
                             <th className="p-3 border">Email</th>
                             <th className="p-3 border">Role</th>
+                            <th className="p-3 border">Change Role</th>
                             <th className="p-3 border">createdAt</th>
                         </tr>
                     </thead>
@@ -111,9 +165,14 @@ const UserPage = () => {
                                     {row?.email}
                                 </td>
 
-                                <td className="p-2 border text-center text-gray-500">
+                                <td className={`p-2 border flex items-center gap-2 capitalize justify-center text-center text-gray-500 ${row?.role == "user" ? "bg-green-100 text-green-600" : " bg-red-100 text-red-600"}`}>
                                     {row?.role}
                                 </td>
+
+                                <td className="p-2 border text-center text-gray-500">
+                                    <button onClick={(e) => handleChangeRole(e, row?._id, row?.role == "user" ? "admin" : "user")} className="bg-yellow-700 cursor-pointer px-3 py-1 text-sm text-white">{`Switch to ${row?.role == "user" ? "Admin" : "User"}`}</button>
+                                </td>
+
 
                                 <td className="p-2 border text-center text-gray-500">
                                     {dateAndTimeFormate(row?.createdAt)}
