@@ -81,18 +81,18 @@ export default function Header() {
           <div className="flex items-center gap-1">
             {/* Logo */}
             <Link href="/" className="flex-shrink-0 flex items-center gap-2">
-              <img src="/logo.png" alt="Spex Nation" className="h-6 sm:h-7 md:h-10 lg:h-12" />
+              <img src="/logo.png" alt="Spex Nation" className="h-6 sm:h-7 md:h-7 lg:h-8 xl:h-12" />
             </Link>
             <img src="/BritainFlag.jpg" alt="BritainFlag" className="w-10 rounded" />
           </div>
 
           <div className='flex gap-12'>
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex gap-8">
+            <nav className="hidden lg:flex gap-5 xl:gap-8">
               <Link href="/" className={`${pathName == "/" ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
                 Home
               </Link>
-              <Link href="/about" className={`${pathName == "/about" ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
+              <Link href="/about" className={`${pathName == "/about" ? "text-yellow-600" : "text-gray-600"} block lg:hidden xl:block text-lg font-light`}>
                 About Us
               </Link>
               <Link href="/shop" className={`${pathName == "/shop" ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
