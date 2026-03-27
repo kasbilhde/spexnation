@@ -65,7 +65,7 @@ const AccessoriesMainBox = ({ product }) => {
             <div className="bg-white w-full border border-gray-200 p-4 h-fit lg:h-full">
                 <h3 className="text-2xl font-medium text-gray-600">{product.name}</h3>
                 <p className="text-left text-md font-light text-gray-900/80 mb-2 line-clamp-2 pt-2">
-                    {product?.description}
+                    {product?.shortDes}
                 </p>
                 <h4 className="pt-4 pb-6 text-2xl font-light text-gray-700/90">£{product.price}</h4>
 

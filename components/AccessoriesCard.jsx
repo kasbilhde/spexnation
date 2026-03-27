@@ -58,7 +58,7 @@ export default function AccessoriesCard({ item }) {
                 </h3>
 
                 <p className="text-left text-sm font-light text-gray-900/80 mb-2 line-clamp-1">
-                    {item?.description}
+                    {item?.shortDes}
                 </p>
 
                 {/* Price */}
