@@ -149,7 +149,7 @@ export default function AccessoriesTabs({ product }) {
 
                 {activeTab === 'description' && (
                     <div className="prose max-w-none">
-                        <h3 className="text-lg font-bold text-gray-900 mb-4">Accessories Description</h3>
+                        {/* <h3 className="text-lg font-bold text-gray-900 mb-4">Accessories Description</h3> */}
                         <p className="text-gray-700 leading-relaxed mb-4">
                             {
                                 product?.description

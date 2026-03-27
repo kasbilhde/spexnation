@@ -23,6 +23,7 @@ const AccessoriesPage = () => {
     const [token, settoken] = useState(null);
     const [Name, setName] = useState('');
     const [price, setprice] = useState(0);
+    const [shortDes, setshortDes] = useState('');
     const [description, setdescription] = useState('');
     const [allAccessories, setallAccessories] = useState([]);
     const [img, setimg] = useState([]);
@@ -65,7 +66,7 @@ const AccessoriesPage = () => {
         e.preventDefault();
 
 
-        if (!Name || !price || !description || !img) {
+        if (!Name || !price || !description || !shortDes || !img) {
             toast.error('Please fill in all the required fields.');
             return;
         }
@@ -79,7 +80,7 @@ const AccessoriesPage = () => {
                 'Content-Type': 'application/json',
                 "authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ name: Name, price: price, description: description, img: img, productType: "Accessories" }),
+            body: JSON.stringify({ name: Name, price: price, description: description, shortDes: shortDes, img: img, productType: "Accessories" }),
         });
 
         const res = await response.json();
@@ -92,6 +93,7 @@ const AccessoriesPage = () => {
             toast.success(res.message);
             setName('');
             setprice(0);
+            setshortDess('');
             setdescription('');
             handleRemovedImage(e);
             fetchAccessories();
@@ -135,9 +137,6 @@ const AccessoriesPage = () => {
 
 
 
-
-
-
     // handle prescription file changes is here
     async function handleImageChange(e) {
 
@@ -170,6 +169,7 @@ const AccessoriesPage = () => {
         setisEdit(true);
         setName(row?.name);
         setprice(row?.price);
+        setshortDes(row?.shortDes);
         setdescription(row?.description);
         // Wait for all images to convert
         const updateImageBase = await convertUrlsToBase64(row?.img);
@@ -183,7 +183,7 @@ const AccessoriesPage = () => {
         e.preventDefault();
 
 
-        if (!Name || !price || !description || !img) {
+        if (!Name || !price || !description || !shortDes || !img) {
             toast.error('Please fill in all the required fields.');
             return;
         }
@@ -197,7 +197,7 @@ const AccessoriesPage = () => {
                 'Content-Type': 'application/json',
                 "authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ name: Name, price: price, description: description, img: img, productType: "Accessories" }),
+            body: JSON.stringify({ name: Name, price: price, description: description, shortDes: shortDes, img: img, productType: "Accessories" }),
         });
 
         const res = await response.json();
@@ -209,6 +209,7 @@ const AccessoriesPage = () => {
             setisEdit(false);
             setName("");
             setprice("");
+            setshortDes("");
             setdescription("");
             setimg("");
             setrowID("");
@@ -235,20 +236,11 @@ const AccessoriesPage = () => {
 
 
 
-
-
-
-    console.log(allAccessories);
-
-
-
-
-
     return (
         <div className=" bg-white py-4 px-5  border border-gray-200">
             <h1 className="text-xl font-medium text-gray-600">Accessories</h1>
 
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
 
                 <div>
                     <label className="text-gray-400 flex items-start gap-1">
@@ -264,12 +256,19 @@ const AccessoriesPage = () => {
                     <input type="number" value={price} onChange={(e) => setprice(e.target.value)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
                 </div>
 
+                <div>
+                    <label className="text-gray-400 flex items-start gap-1">
+                        Accessories Short Discriptions <span className="text-md text-red-600">*</span>
+                    </label>
+                    <input type="text" value={shortDes} onChange={(e) => setshortDes(e.target.value)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
+                </div>
+
             </div >
 
             <div>
-                <div>
+                <div className="mt-4">
                     <label className="text-gray-400 flex items-start gap-1">
-                        Accessories Discriptions <span className="text-md text-red-600">*</span>
+                        Accessories Long Discriptions <span className="text-md text-red-600">*</span>
                     </label>
                     <textarea value={description} onChange={(e) => setdescription(e.target.value)} className="w-full border border-gray-300 p-2 h-[140px] focus:outline-none focus:ring-2 focus:ring-yellow-600"></textarea>
                 </div>
@@ -364,7 +363,7 @@ const AccessoriesPage = () => {
                                     <th className="p-3 border">Image</th>
                                     <th className="p-3 border">Accessories Name</th>
                                     <th className="p-3 border">Accessories Price</th>
-                                    {/* <th className="p-3 border">Accessories Disscription</th> */}
+                                    <th className="p-3 border">Accessories Disscription</th>
                                     <th className="p-3 border">Action</th>
                                 </tr>
                             </thead>
@@ -392,9 +391,9 @@ const AccessoriesPage = () => {
                                             {row?.price}
                                         </td>
 
-                                        {/* <td className="p-2 border text-center text-gray-500">
-                                            {row?.description}
-                                        </td> */}
+                                        <td className="p-2 border text-center text-gray-500">
+                                            {row?.shortDes}
+                                        </td>
 
                                         <td className="p-2 border-b text-center text-gray-500">
 
