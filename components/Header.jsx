@@ -83,7 +83,7 @@ export default function Header() {
             <Link href="/" className="flex-shrink-0 flex items-center gap-2">
               <img src="/logo.png" alt="Spex Nation" className="h-6 sm:h-7 md:h-7 lg:h-8 xl:h-12" />
             </Link>
-            <img src="/BritainFlag.jpg" alt="BritainFlag" className="w-10 rounded" />
+            <img src="/BritainFlag.webp" alt="BritainFlag" className="w-10 rounded" />
           </div>
 
           <div className='flex gap-12'>

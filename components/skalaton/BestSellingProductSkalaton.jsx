@@ -39,19 +39,4 @@ const ProductCardSkeleton = () => {
 
 
 
-
-
-const BestSellingProductSkalaton = () => {
-    return (
-        <div className="w-full py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4 gap-6">
-            {Array.from({ length: 4 }).map((_, i) => (
-                <ProductCardSkeleton key={i} />
-            ))}
-        </div>
-    );
-};
-
-
-
-
-export default BestSellingProductSkalaton;
+export default ProductCardSkeleton;
