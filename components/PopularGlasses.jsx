@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import BestSellingProductSkalaton from "../components/skalaton/BestSellingProductSkalaton";
 import ProductCard from "./ProductCard";
+import BestSellingProductSkalaton from "./skalaton/BestSellingProductSkalaton";
 
 
 
@@ -26,9 +26,7 @@ export default function PopularGlasses() {
 
       const res = await response.json();
       setAllProducts(res?.data);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching products:', error);
       setLoading(false);
@@ -43,16 +41,22 @@ export default function PopularGlasses() {
 
 
   return (
-    <section className="bg-gray-100">
+    <section className="bg-gray-100 min-h-[600px]">
       <section className="px-4 md:px-6 py-6 pt-12">
         <h2 className="text-2xl sm:text-5xl font-light text-gray-900 text-center mb-12 text-gray-900">Best-Selling Frames</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
 
-        {
-          loading ? (
-            <BestSellingProductSkalaton />
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
-              {allProducts?.slice(0, 8).map((item, index) => (
+
+          {
+            loading ? (
+
+              Array.from({ length: 8 }).map((_, i) => (
+                <BestSellingProductSkalaton key={i} />
+              ))
+
+
+            ) : (
+              allProducts?.slice(0, 8).map((item, index) => (
                 <motion.div
                   initial={{ opacity: 0, x: -45 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -64,11 +68,12 @@ export default function PopularGlasses() {
                   key={index} className="text-center">
                   <ProductCard item={item} />
                 </motion.div>
-              ))}
-            </div>
-          )
-        }
+              ))
+            )
+          }
 
+
+        </div>
       </section>
     </section >
   )

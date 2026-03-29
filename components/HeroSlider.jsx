@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from "react";
 import { Autoplay, EffectFade } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import HeroSliderSkeleton from "../components/skalaton/HeroSliderSkeleton";
 
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -14,15 +15,8 @@ import 'swiper/css/effect-fade';
 
 export default function HeroSlider() {
     const swiperRef = useRef(null);
-    const [allBanner, setallBanner] = useState([
-        {
-            productType: "banner",
-            Route: "/shop",
-            img: "/HeroBanner.png",
-
-        }
-    ]);
-    const [IsLoading, setIsLoading] = useState(true);
+    const [allBanner, setallBanner] = useState([]);
+    const [IsLoading, setIsLoading] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
 
     const goTo = (index) => {
@@ -31,9 +25,11 @@ export default function HeroSlider() {
 
 
 
-
     const fetchAccessories = async () => {
         try {
+
+            setIsLoading(true);
+
             // Make API call to get all the product
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/allbanner`, {
                 method: 'GET',
@@ -57,30 +53,31 @@ export default function HeroSlider() {
     }, [])
 
 
-
-
-
     console.log(allBanner);
+
+    // Inside HeroSlider, at the top of the return:
+    if (IsLoading && allBanner.length === 0) return <HeroSliderSkeleton />;
+
 
 
     return (
-        <section className="relative w-full h-fit overflow-hidden">
+        <section className="relative w-full min-h-[400px] h-fit overflow-hidden">
 
             <Swiper
                 key={allBanner.length}   // 👈 important
                 onSwiper={(swiper) => { swiperRef.current = swiper; }}
-                onSlideChange={(swiper) => setActiveIndex(swiper.realIndex ? swiper.realIndex : 0)}
+                onSlideChange={(swiper) => { setActiveIndex(swiper.realIndex) }}
                 modules={[Autoplay, EffectFade]}
                 effect="fade"
                 fadeEffect={{ crossFade: true }}
                 autoplay={{ delay: 5500, disableOnInteraction: false }}
-                loop
+                loop={allBanner.length > 1}
                 speed={900}
                 className="!w-full !h-full"
             >
                 {allBanner.map((slide) => (
                     <SwiperSlide key={slide.id}>
-                        {({ isActive }) => <SlideContent slide={slide} isActive={isActive} IsLoading={IsLoading} />}
+                        {({ isActive }) => <SlideContent slide={slide} isActive={isActive} />}
                     </SwiperSlide>
                 ))}
             </Swiper>
@@ -92,15 +89,7 @@ export default function HeroSlider() {
                         key={i}
                         onClick={() => goTo(i)}
                         aria-label={`Go to slide ${i + 1}`}
-                        className={`
-              rounded-full cursor-pointer
-              transition-all duration-300 ease-out
-              ${activeIndex === i
-                                ? 'w-8 h-3 bg-white border-2 border-white'
-                                : 'w-3 h-3 rounded bg-transparent border-2 border-white'
-                            }
-            `}
-                    />
+                        className={`rounded-full cursor-pointer transition-all duration-300 ease-out ${activeIndex === i ? 'w-8 h-3 bg-white border-2 border-white' : 'w-3 h-3 rounded bg-transparent border-2 border-white'}`} />
                 ))}
             </div>
 
@@ -108,9 +97,11 @@ export default function HeroSlider() {
     );
 }
 
-/* ─── Individual slide ──────────────────────────────────────── */
 
-function SlideContent({ slide, isActive, IsLoading }) {
+
+
+/* ─── Individual slide ──────────────────────────────────────── */
+function SlideContent({ slide, isActive }) {
     const stagger = (i) => ({
         hidden: { opacity: 0, y: 26 },
         visible: {
@@ -121,18 +112,12 @@ function SlideContent({ slide, isActive, IsLoading }) {
     });
 
 
-    const ssss = {
-        productType: "banner",
-        Route: "/shop",
-        img: "/HeroBanner.png",
-    }
-
 
     return (
-        <Link href={IsLoading ? ssss?.Route : slide?.Route} className={`w-full h-fit bg-gray-200 flex items-center overflow-hidden`}>
+        <Link href={slide?.Route} className={`w-full h-fit bg-gray-200 flex items-center overflow-hidden`}>
 
 
-            <Image src={IsLoading ? ssss?.img : slide?.img} alt={"Hero Banner Image"} width={0} height={0} sizes="100vw" className="w-full h-full object-cover" />
+            <Image src={slide?.img} alt={"Hero Banner Image"} width={0} height={0} sizes="100vw" className="w-full h-full object-cover" priority />
 
 
         </Link >
