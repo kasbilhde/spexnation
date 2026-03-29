@@ -131,7 +131,7 @@ export default function Header() {
                     <User size={26} />
                   </Link>
                 ) : (
-                  <Link href="/signin" className="text-gray-600 hover:text-yellow-700 text-lg font-light">
+                  <Link href="/signin" className="hidden xs:block text-gray-600 hover:text-yellow-700 text-lg font-light">
                     Sign In
                   </Link>
                 )
@@ -182,6 +182,11 @@ export default function Header() {
             <Link onClick={() => setIsOpen(!isOpen)} href="/contact" className="text-gray-600 hover:text-yellow-700 text-lg font-light">
               Contact Us
             </Link>
+
+            <Link onClick={() => setIsOpen(!isOpen)} href="/signin" className="block xs:hidden text-gray-600 hover:text-yellow-700 text-lg font-light">
+              Sign In
+            </Link>
+
           </nav>
         )}
       </header>
