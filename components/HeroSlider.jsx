@@ -61,7 +61,7 @@ export default function HeroSlider() {
 
 
     return (
-        <section className="relative w-full min-h-[400px] h-fit overflow-hidden">
+        <section className="relative w-full min-h-fit lg:min-h-[400px] h-fit overflow-hidden">
 
             <Swiper
                 key={allBanner.length}   // 👈 important
