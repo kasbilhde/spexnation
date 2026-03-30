@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import convertImagesToWebP from "../lib/convertImagesToWebP";
 import Loading from "./Loading";
 
 export default function ProductCard({ item }) {
@@ -40,10 +41,11 @@ export default function ProductCard({ item }) {
             {/* Image Container */}
             <div className="relative overflow-hidden bg-white">
                 <Image
-                    src={item?.product_Images[activeIndex]?.img[0]}
+                    src={convertImagesToWebP(item?.product_Images[activeIndex]?.img[0])}
                     alt={item?.ProductTitle}
                     width={1000}
                     height={1000}
+                    sizes="328px"
                     className="w-full h-[190px] object-contain group-hover:scale-105 transition-transform duration-500"
                 />
 

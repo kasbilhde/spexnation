@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Autoplay, EffectFade } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import HeroSliderSkeleton from "../components/skalaton/HeroSliderSkeleton";
+import convertImagesToWebP from "../lib/convertImagesToWebP";
 
 import 'swiper/css';
 import 'swiper/css/effect-fade';
@@ -52,8 +53,6 @@ export default function HeroSlider() {
         fetchAccessories();
     }, [])
 
-
-    console.log(allBanner);
 
     // Inside HeroSlider, at the top of the return:
     if (IsLoading && allBanner.length === 0) return <HeroSliderSkeleton />;
@@ -117,7 +116,7 @@ function SlideContent({ slide, isActive }) {
         <Link href={slide?.Route} className={`w-full h-fit bg-gray-200 flex items-center overflow-hidden`}>
 
 
-            <Image src={slide?.img} alt={"Hero Banner Image"} width={0} height={0} sizes="100vw" className="w-full h-full object-cover" priority />
+            <Image src={convertImagesToWebP(slide?.img)} alt={"Hero Banner Image"} width={0} height={0} sizes="100vw" className="w-full h-full object-cover" priority />
 
 
         </Link >
