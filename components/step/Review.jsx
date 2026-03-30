@@ -59,6 +59,9 @@ export default function Review() {
     }
 
 
+
+
+
     return (
         <motion.div
             initial={{ opacity: 0, y: -100 }}
@@ -192,6 +195,16 @@ export default function Review() {
                                         </b>
                                         {item.name}
                                     </span>
+                                    {
+                                        item?.target === "Frame" && (
+                                            <span className="pt-2 capitalize">
+                                                <b className="font-extrabold">
+                                                    Glasses Use:
+                                                </b>
+                                                {lens?.LenseUseCase == "noprescription" ? "No Prescription" : lens?.LenseUseCase == "computerorintermediate" ? "Computer/Intermediate" : lens?.LenseUseCase}
+                                            </span>
+                                        )
+                                    }
                                     <span className={`${item?.name != "Clear" && item?.target == "Tints" && " flex gap-2 flex-col items-start mt-2"}`}>
 
 

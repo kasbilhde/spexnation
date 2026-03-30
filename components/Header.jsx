@@ -1,6 +1,7 @@
 'use client'
 
 import { Menu, User } from 'lucide-react';
+import Image from "next/image";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -81,9 +82,24 @@ export default function Header() {
           <div className="flex items-center gap-1">
             {/* Logo */}
             <Link href="/" className="flex-shrink-0 flex items-center gap-2">
-              <img src="/logo.png" alt="Spex Nation" className="h-6 sm:h-7 md:h-7 lg:h-8 xl:h-12" />
+              {/* <img src="/logo.png" alt="Spex Nation" className="h-6 sm:h-7 md:h-7 lg:h-8 xl:h-12" /> */}
+              <Image
+                src="/logo.png"
+                alt="Spex Nation"
+                width={200}
+                height={48}
+                sizes="(max-width: 640px) 24px, (max-width: 768px) 28px, (max-width: 1024px) 32px, 48px"
+                className="h-6 sm:h-7 md:h-7 lg:h-8 xl:h-12 w-auto"
+              />
             </Link>
-            <img src="/BritainFlag.webp" alt="BritainFlag" className="w-10 rounded" />
+            <Image
+              src="/BritainFlag.webp"
+              alt="BritainFlag"
+              width={40}
+              height={20}
+              sizes="40px"
+              className="w-10 rounded"
+            />
           </div>
 
           <div className='flex gap-12'>

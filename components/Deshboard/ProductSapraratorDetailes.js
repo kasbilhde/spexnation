@@ -3,6 +3,8 @@ import Link from "next/link";
 
 const ProductSapraratorDetailes = ({ single, index }) => {
 
+    console.log("single", single)
+
     return (
         <div className="border border-blue-300 bg-yellow-50 px-3 py-2 mt-5 h-fit">
             <div className="flex items-center justify-between bg-yellow-200 px-3 py-2">
@@ -89,6 +91,16 @@ const ProductSapraratorDetailes = ({ single, index }) => {
                                 </label>
                                 <span className="text-gray-500 pl-2 flex items-center">
                                     {single?.AllLensInfo?.LenseThickness}
+                                </span>
+                            </div>
+
+
+                            <div className="border border-gray-100 bg-gray-100 px-3 py-2 flex items-center">
+                                <label className="text-gray-800">
+                                    Glasses Use:
+                                </label>
+                                <span className="text-gray-500 pl-2 flex items-center capitalize">
+                                    {single?.AllLensInfo?.LenseUseCase == "noprescription" ? "No Prescription" : single?.AllLensInfo?.LenseUseCase == "computerorintermediate" ? "Computer/Intermediate" : single?.AllLensInfo?.LenseUseCase}
                                 </span>
                             </div>
                         </>
