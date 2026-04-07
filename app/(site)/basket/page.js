@@ -276,14 +276,44 @@ export default function CartPage() {
                                         {
                                             item?.type === "Frame" && (
                                                 <>
-                                                    <div className="flex items-center gap-2"><b>Frame Colour :</b>
-                                                        <span>{item?.AllLensInfo?.LenColor[0]?.name}</span>
-                                                        <div style={{ backgroundColor: item?.AllLensInfo?.LenColor[0]?.value }} className='h-5 w-5' />
-                                                    </div>
+                                                    {
+                                                        item?.AllLensInfo?.ProductDetails?.sunglassesType === "Prescription Sunglasses" || item?.AllLensInfo?.ProductDetails?.sunglassesType === "" && (
+                                                            <div className="flex flex-col items-start gap-2">
+                                                                <div className="flex items-center gap-2">
+                                                                    <b>Frame Colour :</b>
+                                                                    <span>{item?.AllLensInfo?.LenColor?.[0]?.name}</span>
+                                                                    <div
+                                                                        style={{ backgroundColor: item?.AllLensInfo?.LenColor?.[0]?.value }}
+                                                                        className="h-5 w-5"
+                                                                    />
+                                                                </div>
+                                                                <div className="flex items-center gap-2">
+                                                                    <b>Brand Sunglassess :</b>
+                                                                    <span>{item?.AllLensInfo?.LenseBrand}</span>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }
+
+                                                    {
+                                                        item?.AllLensInfo?.sunglassesType === "Non-Prescription Sunglasses" && (
+                                                            <div className="flex flex-col items-start gap-2">
+                                                                <div className="flex items-center gap-2">
+                                                                    <b>Brand Sunglassess :</b>
+                                                                    <span>{item?.AllLensInfo?.brand}</span>
+
+
+                                                                </div>
+                                                                <div className="flex items-center gap-2">
+                                                                    <b>Sunglassess Type :</b>
+                                                                    <span>{item?.AllLensInfo?.sunglassesType}</span>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }
                                                 </>
                                             )
                                         }
-
 
                                     </div>
 

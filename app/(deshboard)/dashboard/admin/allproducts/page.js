@@ -73,6 +73,7 @@ const glasses = [
 const AllproductPage = () => {
 
 
+    const [search, setSearch] = useState('');
     const [loading, setLoading] = useState(false);
     const [allProducts, setAllProducts] = useState([]);
 
@@ -104,6 +105,17 @@ const AllproductPage = () => {
 
 
 
+    function searchProducts(items, query) {
+        if (!query) return items;
+
+        return items.filter(item =>
+            item.ProductTitle.toLowerCase().includes(query.toLowerCase())
+        );
+    }
+
+    const filteredProducts = searchProducts(allProducts, search);
+
+
 
     if (loading) {
         return (
@@ -121,12 +133,17 @@ const AllproductPage = () => {
         <div className=" bg-white py-5 px-5  border border-gray-200">
             <div className="flex items-center justify-between">
                 <h1 className="text-xl font-medium text-gray-600">All Products</h1>
-                <Link className="text-white bg-yellow-700 py-2 px-4" href="/dashboard/admin/addproduct">Add New Product</Link>
+                <div className="flex items-center gap-4">
+                    <div className="hidden md:block">
+                        <input value={search} onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search By Name..." className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none" />
+                    </div>
+                    <Link className="text-white bg-yellow-700 py-2 px-4" href="/dashboard/admin/addproduct">Add New Product</Link>
+                </div>
             </div>
 
             <div className="mt-6 overflow-x-auto">
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
-                    {allProducts.map((item, index) => (
+                    {filteredProducts.map((item, index) => (
                         <div key={index} className="text-center">
                             <DashboardProductCard item={item} />
                         </div>

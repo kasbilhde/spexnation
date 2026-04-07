@@ -1,5 +1,6 @@
 'use client';
 
+import namer from "color-namer";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -9,70 +10,6 @@ import { RxCross2 } from "react-icons/rx";
 import Loading from "../../../../../components/Loading";
 import fileToBase64 from "../../../../../lib/fileToBase64";
 import getTookn from "../../../../../lib/getTookn";
-const colors = [
-    { name: "Black", value: "#000000" },
-    { name: "Gray", value: "#808080" },
-    { name: "Dark Gray", value: "#A9A9A9" },
-    { name: "Light Gray", value: "#D3D3D3" },
-    { name: "Silver", value: "#C0C0C0" },
-    { name: "Platinum", value: "#E5E4E2" },
-    { name: "Charcoal", value: "#36454F" },
-    { name: "Slate", value: "#708090" },
-    { name: "Ivory", value: "#FFFFF0" },
-    { name: "Azure", value: "#F0FFFF" },
-    { name: "White", value: "#FFFFFF" },
-    { name: "Tan", value: "#D2B48C" },
-    { name: "Beige", value: "#F5F5DC" },
-    { name: "Cream", value: "#FFFDD0" },
-    { name: "Plum", value: "#DDA0DD" },
-    { name: "Orchid", value: "#DA70D6" },
-    { name: "Periwinkle", value: "#CCCCFF" },
-    { name: "Mint Cream", value: "#F5FFFA" },
-    { name: "Snow", value: "#FFFAFA" },
-    { name: "Red", value: "#FF0000" },
-    { name: "Dark Red", value: "#8B0000" },
-    { name: "Crimson", value: "#DC143C" },
-    { name: "Tomato", value: "#FF6347" },
-    { name: "Coral", value: "#FF7F50" },
-    { name: "Orange", value: "#FFA500" },
-    { name: "Dark Orange", value: "#FF8C00" },
-    { name: "Gold", value: "#FFD700" },
-    { name: "Yellow", value: "#FFFF00" },
-    { name: "Light Yellow", value: "#FFFFE0" },
-    { name: "Lemon", value: "#FFF44F" },
-    { name: "Green", value: "#008000" },
-    { name: "Dark Green", value: "#006400" },
-    { name: "Lime", value: "#00FF00" },
-    { name: "Olive", value: "#808000" },
-    { name: "Mint", value: "#98FF98" },
-    { name: "Sea Green", value: "#2E8B57" },
-    { name: "Teal", value: "#008080" },
-    { name: "Cyan", value: "#00FFFF" },
-    { name: "Turquoise", value: "#40E0D0" },
-    { name: "Sky Blue", value: "#87CEEB" },
-    { name: "Light Blue", value: "#ADD8E6" },
-    { name: "Blue", value: "#0000FF" },
-    { name: "Navy", value: "#000080" },
-    { name: "Royal Blue", value: "#4169E1" },
-    { name: "Indigo", value: "#4B0082" },
-    { name: "Purple", value: "#800080" },
-    { name: "Violet", value: "#8F00FF" },
-    { name: "Lavender", value: "#E6E6FA" },
-    { name: "Magenta", value: "#FF00FF" },
-    { name: "Pink", value: "#FFC0CB" },
-    { name: "Hot Pink", value: "#FF69B4" },
-    { name: "Deep Pink", value: "#FF1493" },
-    { name: "Rose", value: "#FF007F" },
-    { name: "Brown", value: "#A52A2A" },
-    { name: "Saddle Brown", value: "#8B4513" },
-    { name: "Chocolate", value: "#D2691E" },
-    { name: "Maroon", value: "#800000" },
-    { name: "Amber", value: "#FFBF00" },
-    { name: "Peach", value: "#FFE5B4" },
-    { name: "Apricot", value: "#FBCEB1" },
-    { name: "Salmon", value: "#FA8072" },
-
-];
 
 const brands = [
     "Ambri",
@@ -91,7 +28,6 @@ const brands = [
 ];
 
 
-
 const AddproductPage = () => {
 
     const router = useRouter();
@@ -100,6 +36,7 @@ const AddproductPage = () => {
     const [token, setToken] = useState(null);
 
     const [brand, setbrand] = useState('');
+    const [sunglassType, setsunglassType] = useState('');
     const [title, settitle] = useState('');
     const [shortdes, setshortdes] = useState('');
     const [price, setprice] = useState('');
@@ -132,7 +69,6 @@ const AddproductPage = () => {
         e.preventDefault();
 
 
-
         if (!brand || !title || !shortdes || !price || !fType || !description || gellary.length < 1) {
 
             toast.error('Please fill in all the required fields.');
@@ -155,6 +91,7 @@ const AddproductPage = () => {
             lensHeight: lensHeight,
             BridgeWidth: BridgeWidth,
             ArmLength: ArmLength,
+            sunglassesType: sunglassType,
             product_Images: gellary,
             product_Discription: description,
             productType: "Frame"
@@ -185,6 +122,7 @@ const AddproductPage = () => {
             setfType('');
             setfShape('');
             setlensWidth('');
+            setsunglassType('');
             setlensHeight('');
             setBridgeWidth('');
             setArmLength('');
@@ -225,7 +163,12 @@ const AddproductPage = () => {
             ...prev,
             {
                 img: base64Images, // multiple base64 images
-                color: []
+                color: [
+                    {
+                        name: "Plum",
+                        value: "#814285"
+                    }
+                ]
             }
         ]);
     }
@@ -329,11 +272,20 @@ const AddproductPage = () => {
 
 
 
+
     function handleColorSelect(e, index) {
 
         e.preventDefault();
 
-        const selectedColor = JSON.parse(e.target.value);
+
+        const cCode = e.target.value;
+        const cName = namer(e.target.value).ntc[0].name;
+
+
+        const selectedColor = {
+            name: cName,
+            value: cCode
+        };
 
         setgellery(prev =>
             prev.map((item, i) => {
@@ -350,7 +302,6 @@ const AddproductPage = () => {
 
 
     }
-
 
 
 
@@ -380,6 +331,26 @@ const AddproductPage = () => {
 
                             </select>
                         </div>
+
+
+                        {
+                            brand === "SUNGLASSES" && (
+                                <div>
+                                    <label className="text-gray-400 flex items-start gap-2">
+                                        Sunglasses Type <span className="text-xs text-red-600">Required</span>
+                                    </label>
+                                    <select value={sunglassType} onChange={(e) => setsunglassType(e.target.value)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600">
+                                        <option className="text-gray-400 checked:text-gray-400" value="">Select Sunglasses Type</option>
+
+                                        <option value={"Prescription Sunglasses"}>Prescription Sunglasses</option>
+                                        <option value={"Non-Prescription Sunglasses"}>Non-Prescription Sunglasses</option>
+
+                                    </select>
+                                </div>
+                            )
+                        }
+
+
 
 
                         <div>
@@ -571,15 +542,14 @@ const AddproductPage = () => {
                                         </div>
                                         <div className="w-full">
 
+                                            <div className="mb-3 w-full">
+                                                <label className="text-gray-400 flex items-start gap-1 flex justify-between">
+                                                    <span>Colour <span className="text-md text-red-600">*</span></span>
 
-                                            <select onChange={(e) => handleColorSelect(e, index)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600">
-                                                <option className="text-gray-400 checked:text-gray-400" value="">Select Product Color</option>
-                                                {
-                                                    colors?.map((cl, idx) => (
-                                                        <option key={idx} className="text-gray-900 checked:text-gray-400" style={{ backgroundColor: cl?.value }} value={JSON.stringify(cl)}>{cl?.name}</option>
-                                                    ))
-                                                }
-                                            </select>
+                                                    <span>{gellary[index]?.color[0]?.name}</span>
+                                                </label>
+                                                <input style={{ backgroundColor: gellary[index]?.color[0]?.value }} value={gellary[index]?.color[0]?.value} onChange={(e) => handleColorSelect(e, index)} type="color" className={`w-full focus:outline-none cursor-pointer h-9`} />
+                                            </div>
 
 
                                         </div>

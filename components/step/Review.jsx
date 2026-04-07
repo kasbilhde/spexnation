@@ -27,8 +27,6 @@ export default function Review() {
 
         setisLoading(true);
 
-        console.log(lens);
-
 
         // fream item object here
         const freamItem = {
