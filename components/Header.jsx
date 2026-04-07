@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { IoIosArrowUp } from "react-icons/io";
 import HeaderCartIcon from "../components/HeaderCartIcon";
 import getTookn from "../lib/getTookn";
 import verifyJWT from "../lib/verifyJWT";
@@ -12,6 +13,8 @@ import verifyJWT from "../lib/verifyJWT";
 
 
 export default function Header() {
+
+  const [smallnavshow, setsmallnavshow] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const pathName = usePathname();
   const [email, setemail] = useState('');
@@ -117,15 +120,36 @@ export default function Header() {
               <Link href="/mens" className={`${pathName == "/mens" ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
                 Mens
               </Link>
+
               <Link href="/womens" className={`${pathName == "/womens" ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
                 Womens
               </Link>
 
-              <Link href="/sunglasses" className={`${pathName == "/sunglasses" ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
-                Sunglasses
-              </Link>
 
-              <Link href="/accessories" className={`${pathName?.startsWith("/accessories") ? "text-yellow-600" : "text-gray-600"} text-lg font-light`}>
+              <div className="relative group cursor-pointer">
+
+                <span className={`${pathName?.startsWith("/sunglasses") ? "text-yellow-600" : "text-gray-600"} text-lg font-light flex items-center gap-1`}>
+                  Sunglasses
+
+                  <IoIosArrowUp className="rotate-180 group-hover:rotate-0 transition-all duration-200" />
+                </span>
+
+
+                <div className="hidden group-hover:flex flex flex-col items-start gap-2 bg-white border border-gray-200 shadow-lg p-4 absolute top-7.5 left-0 z-40 text-left w-[260px] ">
+                  <Link href="/sunglasses/prescriptions" className={`${pathName == "/sunglasses" ? "text-yellow-600" : "text-gray-600"} text-md font-light hover:underline hover:text-yellow-600`}>
+                    Prescriptions Sunglasses
+                  </Link>
+
+                  <Link href="/sunglasses/non-prescriptions" className={`${pathName == "/sunglasses" ? "text-yellow-600" : "text-gray-600"} text-md font-light hover:underline hover:text-yellow-600`}>
+                    Non Prescriptions Sunglasses
+                  </Link>
+                </div>
+
+              </div>
+
+
+
+              <Link href="/accessories" className={`${pathName?.startsWith("/accessories") ? "text-yellow-600" : "text-gray-600"} text-lg font-light `}>
                 Accessories
               </Link>
 
@@ -167,10 +191,10 @@ export default function Header() {
         {/* Mobile Menu */}
         {isOpen && (
           <nav className="flex flex-col lg:hidden bg-gray-100 border-t border-yellow-600/20 py-6 px-4 space-y-2">
-            <Link onClick={() => setIsOpen(!isOpen)} href="/" className="text-gray-600 hover:text-yellow-700 text-lg font-semibold">
+            <Link onClick={() => setIsOpen(!isOpen)} href="/" className="text-gray-600 hover:text-yellow-700 text-lg font-light">
               Home
             </Link>
-            <Link onClick={() => setIsOpen(!isOpen)} href="/about" className="text-gray-600 hover:text-yellow-700 text-lg font-semibold">
+            <Link onClick={() => setIsOpen(!isOpen)} href="/about" className="text-gray-600 hover:text-yellow-700 text-lg font-light">
               About Us
             </Link>
             <Link onClick={() => setIsOpen(!isOpen)} href="/shop" className="text-gray-600 hover:text-yellow-700 text-lg font-light">
@@ -186,9 +210,30 @@ export default function Header() {
             </Link>
 
 
-            <Link onClick={() => setIsOpen(!isOpen)} href="/sunglasses" className="text-gray-600 hover:text-yellow-700 text-lg font-light">
-              Sunglasses
-            </Link>
+
+
+
+            <div className="">
+
+              <span onClick={() => setsmallnavshow(!smallnavshow)} className={`${pathName?.startsWith("/sunglasses") ? "text-yellow-600" : "text-gray-600"} text-lg font-light flex items-center gap-1 cursor-pointer`}>
+                Sunglasses
+
+                <IoIosArrowUp className={`${smallnavshow ? "rotate-0" : "rotate-180"} transition-all duration-200`} />
+              </span>
+
+
+              <div className={`${smallnavshow ? "flex" : "hidden"} flex-col items-start gap-2 bg-white border border-gray-200 shadow-lg p-4  text-left w-[260px]`}>
+                <Link onClick={() => setIsOpen(!isOpen)} href="/sunglasses/prescriptions" className="text-gray-600 hover:text-yellow-700 text-md font-light cursor-pointer">
+                  Prescriptions Sunglasses
+                </Link>
+
+                <Link onClick={() => setIsOpen(!isOpen)} href="/sunglasses/non-prescriptions" className="text-gray-600 hover:text-yellow-700 text-md font-light cursor-pointer">
+                  Non Prescriptions Sunglasses
+                </Link>
+              </div>
+
+            </div>
+
 
             <Link onClick={() => setIsOpen(!isOpen)} href="/accessories" className="text-gray-600 hover:text-yellow-700 text-lg font-light">
               Accessories

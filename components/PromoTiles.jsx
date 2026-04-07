@@ -9,7 +9,7 @@ export default function PromoTiles() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {/* Buy 2 Get 1 Tile */}
         <div className="forMan">
-          <div className="relative h-64 md:h-96 xl:h-[600px] flex flex-col justify-end p-6">
+          <div className="relative h-80 md:h-96 xl:h-[600px] flex flex-col justify-end p-6">
             <div className="text-white">
               <Link href={'/mens'} className="">
                 <span className="flex items-center gap-2">
@@ -23,7 +23,7 @@ export default function PromoTiles() {
 
         {/* Premium Lenses Tile */}
         <div className="forwoman">
-          <div className="relative h-64 md:h-96 xl:h-[600px] flex flex-col justify-end p-6">
+          <div className="relative h-80 md:h-96 xl:h-[600px] flex flex-col justify-end p-6">
             <div className="text-white">
               <Link className="" href={'/womens'} className="">
                 <span className="flex items-center gap-2">
@@ -40,7 +40,7 @@ export default function PromoTiles() {
 
         {/* Premium Lenses Tile */}
         <div className="foraccessories">
-          <div className="relative h-64 md:h-96 xl:h-[600px] flex flex-col justify-end p-6">
+          <div className="relative h-80 md:h-96 xl:h-[600px] flex flex-col justify-end p-6">
             <div className="text-white">
               <Link href={'/accessories'} className="">
                 <span className="flex items-center gap-2">

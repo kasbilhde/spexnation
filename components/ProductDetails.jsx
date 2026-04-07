@@ -1,10 +1,12 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useEffect, useState } from 'react'
-import Loading from "../components/Loading"
-import useLenseStore from '../store/useLenseStore'
-import useStepStore from '../store/useStepStore'
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+import Loading from "../components/Loading";
+import { addToCart } from '../lib/cartHelper';
+import useLenseStore from '../store/useLenseStore';
+import useStepStore from '../store/useStepStore';
 
 export default function ProductDetails({ product, activeIndex, setactiveIndex, setSelectedImage }) {
   const [selectedColor, setSelectedColor] = useState('black')
@@ -86,6 +88,50 @@ export default function ProductDetails({ product, activeIndex, setactiveIndex, s
   }
 
 
+  const directAddtoCart = product?.sunglassesType && product?.sunglassesType === "Non-Prescription Sunglasses";
+
+
+
+  // function handle add to basket
+  const handleaddtoBasket = (e, item) => {
+
+    e.preventDefault();
+    setisLoading(true);
+
+
+    console.log(item);
+
+    // fream item object here
+    const freamItem = {
+      cartItemId: crypto.randomUUID(),
+      productId: item?._id,              // your product's ID
+      type: item?.productType,
+      name: item?.ProductTitle,
+      price: item?.product_price,
+      quantity: 1,
+      image: item?.product_Images[0]?.img[0],
+      description: item?.product_Discription,
+      AllLensInfo: item,
+      addedAt: new Date().toISOString(),
+    }
+
+
+
+    // add to cart here
+    addToCart(freamItem);
+
+
+    setTimeout(() => {
+
+      toast.success("Added in Basket");
+
+      // Trigger header update
+      window.dispatchEvent(new Event("cartUpdated"));
+
+      setisLoading(false);
+    }, 700);
+
+  }
 
 
 
@@ -153,13 +199,14 @@ export default function ProductDetails({ product, activeIndex, setactiveIndex, s
 
       {/* Action Buttons */}
       <div className="space-y-3">
-        <button type="button" onClick={(e) => { hanldleSelete(e) }} className="w-full pBg text-white font-light py-4 rounded-lg transition flex items-center justify-center gap-2">
+        <button type="button" onClick={(e) => { directAddtoCart ? handleaddtoBasket(e, product) : hanldleSelete(e) }} className="w-full pBg text-white font-light py-4 rounded-lg transition flex items-center justify-center gap-2">
           {
-            isLoading ? <Loading /> : "Select this Frame"
+            isLoading ? <Loading /> : (directAddtoCart ? "Add to Basket" : "Select this Frame")
           }
         </button>
       </div>
 
+      <Toaster />
     </motion.div>
   )
 }

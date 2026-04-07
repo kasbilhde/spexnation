@@ -21,6 +21,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         { icon: PackageSearch, label: 'All Products', href: '/dashboard/admin/allproducts' },
         { icon: Puzzle, label: 'Add Accessories', href: '/dashboard/admin/addaccessories' },
         { icon: Code, label: 'Coupon Code', href: '/dashboard/admin/coupon' },
+        // { icon: PaintRoller, label: 'Add Colour', href: '/dashboard/admin/colour' },
         { icon: Settings, label: 'Site Settings', href: '/dashboard/admin/settings' },
     ];
 

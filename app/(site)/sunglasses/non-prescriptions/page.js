@@ -1,18 +1,19 @@
 'use client'
 
 import { useEffect, useState } from "react";
-import Container from "../../../components//Container";
-import ProductBreadcrumb from "../../../components/ProductBreadcrumb";
-import ProductCard from "../../../components/ProductCard";
-import ProductNotFound from "../../../components/ProductNotFound";
-import ShopFilter from "../../../components/ShopFilter";
-import ProductGridSkeleton from '../../../components/skalaton/ProductGridSkeleton';
+import Container from "../../../../components//Container";
+import ProductBreadcrumb from "../../../../components/ProductBreadcrumb";
+import ProductCard from "../../../../components/ProductCard";
+import ProductNotFound from "../../../../components/ProductNotFound";
+import ShopFilter from "../../../../components/ShopFilter";
+import ProductGridSkeleton from '../../../../components/skalaton/ProductGridSkeleton';
 
 
 const breadcrumbs = [
     { label: 'Home', href: '/' },
     { label: 'Shop', href: '/shop' },
-    { label: 'Womens', href: '/womens' },
+    { label: 'Sunglasses', href: '/sunglasses/non-prescriptions' },
+    { label: 'Non-Prescription Sunglasses', href: '/sunglasses/non-prescriptions' },
 ]
 
 
@@ -26,8 +27,8 @@ export default function ProductPage() {
 
     const [searchLoading, setsearchLoading] = useState(false);
     const [fopen, setfOpen] = useState(false);
-    const [selectedBrand, setslectedBrand] = useState([]);
-    const [selectedGender, setselectedGender] = useState(["Womens"]);
+    const [selectedBrand, setslectedBrand] = useState(["SUNGLASSES"]);
+    const [selectedGender, setselectedGender] = useState([]);
     const [selectedMatarial, setselectedMatarial] = useState([]);
     const [selectedFrameType, setselectedFrameType] = useState([]);
     const [selectedFrameShape, setselectedFrameShape] = useState([]);
@@ -161,14 +162,6 @@ export default function ProductPage() {
         })
 
 
-
-
-
-
-
-
-
-
         // update the filtered products state
         setfilteredProducts(bFilter);
     }
@@ -183,10 +176,6 @@ export default function ProductPage() {
     }, [selectedBrand, selectedGender, selectedMatarial, selectedFrameType, selectedFrameShape, selectedPrice, selectedLenWidth, selectedBrideWidth])
 
 
-
-
-
-
     // handle filter clear function is here
     const handleClearFilter = (e) => {
         e.preventDefault();
@@ -199,6 +188,12 @@ export default function ProductPage() {
         setselectedLenWidth({ min: 20, max: 70 });
         setselectedBrideWidth({ min: 10, max: 90 });
     }
+
+
+
+
+
+    const nonPrescriptionsSunglasses = filteredProducts?.filter((item) => item?.sunglassesType === "Non-Prescription Sunglasses");
 
 
 
@@ -223,9 +218,9 @@ export default function ProductPage() {
 
 
                     {
-                        filteredProducts?.length > 0 ? (
+                        nonPrescriptionsSunglasses?.length > 0 ? (
                             <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 lg:gap-6">
-                                {filteredProducts?.map((item, index) => (
+                                {nonPrescriptionsSunglasses?.map((item, index) => (
                                     <div key={index} className="text-center">
                                         <ProductCard item={item} />
                                     </div>
@@ -238,7 +233,6 @@ export default function ProductPage() {
                             </div>
                         )
                     }
-
 
 
                 </div>

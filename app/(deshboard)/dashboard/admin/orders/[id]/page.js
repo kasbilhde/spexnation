@@ -91,6 +91,8 @@ const OrderPage = () => {
 
 
 
+
+
     if (loading) {
         return (
             <div className="h-screen flex justify-center items-center">
@@ -100,6 +102,11 @@ const OrderPage = () => {
             </div>
         )
     }
+
+
+
+    console.log(getSingleOrders);
+
 
 
     return (

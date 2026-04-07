@@ -46,7 +46,7 @@ export default function ProductCard({ item }) {
                     width={1000}
                     height={1000}
                     sizes="328px"
-                    className="w-full h-[190px] object-contain group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-[190px] object-contain group-hover:scale-105 transition-transform duration-700"
                 />
 
                 {/* Quick View on Hover */}

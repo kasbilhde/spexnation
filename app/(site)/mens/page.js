@@ -12,6 +12,7 @@ import ProductGridSkeleton from '../../../components/skalaton/ProductGridSkeleto
 const breadcrumbs = [
     { label: 'Home', href: '/' },
     { label: 'Shop', href: '/shop' },
+    { label: 'Mens', href: '/mens' },
 ]
 
 
