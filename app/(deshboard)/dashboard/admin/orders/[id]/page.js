@@ -105,10 +105,6 @@ const OrderPage = () => {
 
 
 
-    console.log(getSingleOrders);
-
-
-
     return (
         <div className=" bg-white py-5 px-5  border border-gray-200">
             <div className="flex items-center justify-between">

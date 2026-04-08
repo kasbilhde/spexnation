@@ -3,8 +3,6 @@ import Link from "next/link";
 
 const ProductSapraratorDetailes = ({ single, index }) => {
 
-    // console.log("single", single);
-
     return (
         <div className="border border-blue-300 bg-yellow-50 px-3 py-2 mt-5 h-fit">
             <div className="flex items-center justify-between bg-yellow-200 px-3 py-2">
@@ -56,7 +54,7 @@ const ProductSapraratorDetailes = ({ single, index }) => {
 
 
                             {
-                                single?.AllLensInfo?.ProductDetails?.sunglassesType === "Prescription Sunglasses" || single?.AllLensInfo?.ProductDetails?.sunglassesType === "" && (
+                                (single?.AllLensInfo?.ProductDetails?.sunglassesType === "Prescription Sunglasses" || single?.AllLensInfo?.ProductDetails?.sunglassesType === "") && (
                                     <>
                                         <div className="border border-gray-100 bg-gray-100 px-3 py-2 flex items-center">
                                             <label className="text-gray-800">
@@ -159,7 +157,7 @@ const ProductSapraratorDetailes = ({ single, index }) => {
                     <>
 
                         {
-                            single?.AllLensInfo?.ProductDetails?.sunglassesType === "Prescription Sunglasses" || single?.AllLensInfo?.ProductDetails?.sunglassesType === "" && (
+                            (single?.AllLensInfo?.ProductDetails?.sunglassesType === "Prescription Sunglasses" || single?.AllLensInfo?.ProductDetails?.sunglassesType === "") && (
 
 
                                 <div className="mt-6">

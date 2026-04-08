@@ -48,6 +48,7 @@ export default function ProductSinglePage() {
 
 
     const [brand, setbrand] = useState('');
+    const [sunglassesType, setsunglassesType] = useState('');
     const [title, settitle] = useState('');
     const [shortdes, setshortdes] = useState('');
     const [price, setprice] = useState('');
@@ -114,6 +115,7 @@ export default function ProductSinglePage() {
             setsingleProducts(res?.data);
             settitle(res?.data?.ProductTitle);
             setbrand(res?.data?.brand);
+            setsunglassesType(res?.data?.sunglassesType);
             setshortdes(res?.data?.shortdes);
             setprice(res?.data?.product_price);
             setgender(res?.data?.gender);
@@ -204,6 +206,7 @@ export default function ProductSinglePage() {
         const updatedData = {
             ProductTitle: title,
             brand: brand,
+            sunglassesType: sunglassesType,
             shortdes: shortdes,
             product_price: price,
             gender: gender,
@@ -247,9 +250,6 @@ export default function ProductSinglePage() {
 
 
     }
-
-
-
 
 
 
@@ -422,7 +422,6 @@ export default function ProductSinglePage() {
     }
 
 
-
     return (
         <div className="min-h-screen bg-gray-100">
             <div className="border border-gray-200 bg-white grid grid-cols-1 lg:grid-cols-2 gap-5 p-5">
@@ -559,6 +558,26 @@ export default function ProductSinglePage() {
 
 
                             </div>
+
+                            {
+                                brand === "SUNGLASSES" && (
+                                    <div>
+                                        <label className="text-gray-400 flex items-start gap-2">
+                                            Sunglasses Type
+                                        </label>
+                                        <select value={sunglassesType} onChange={(e) => setsunglassesType(e.target.value)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600">
+                                            <option className="text-gray-400 checked:text-gray-400" value="">Select Sunglasses Type</option>
+
+                                            <option value={"Prescription Sunglasses"}>Prescription Sunglasses</option>
+                                            <option value={"Non-Prescription Sunglasses"}>Non-Prescription Sunglasses</option>
+
+                                        </select>
+
+
+                                    </div>
+                                )
+                            }
+
 
                             <div>
                                 <label className="text-gray-400 flex items-start gap-2">
