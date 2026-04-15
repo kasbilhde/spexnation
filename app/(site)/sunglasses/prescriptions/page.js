@@ -37,7 +37,7 @@ export default function ProductPage() {
     const [selectedBrideWidth, setselectedBrideWidth] = useState({ min: 10, max: 90 });
     const [filteredProducts, setfilteredProducts] = useState([]);
 
-
+    const [allBrandList, setallBrandList] = useState([]);
 
 
 
@@ -46,7 +46,7 @@ export default function ProductPage() {
     const fetchProducts = async () => {
         try {
             // Make API call to get all the product
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/allproducts`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/allproducts/sunglassess`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -66,8 +66,32 @@ export default function ProductPage() {
     };
 
 
+    const fetchSettingsData = async () => {
+        setLoading(true);
+        try {
+            // Make API call to get all the product
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const res = await response.json();
+            const allBrands = res?.data?.brands?.filter(brand => brand.forProduct === "Prescription Sunglasses");
+            setallBrandList(allBrands);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            setLoading(false);
+        }
+    };
+
+
+
     useEffect(() => {
         fetchProducts();
+        fetchSettingsData();
     }, [])
 
 
@@ -190,7 +214,9 @@ export default function ProductPage() {
     }
 
 
-    const prescriptionsSunglasses = filteredProducts?.filter((item) => item?.sunglassesType !== "Non-Prescription Sunglasses");
+
+
+    const prescriptionsSunglasses = filteredProducts?.filter((item) => item?.frameType === "Prescription Sunglasses");
 
 
 
@@ -211,7 +237,7 @@ export default function ProductPage() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
                     <div className={`lg:col-span-1 p-4 border border-gray-200 bg-white max-h-[500px] lg:max-h-[700px] w-full z-40 ${fopen ? 'sticky top-[75px]' : 'lg:sticky lg:top-[75px]'}`}>
-                        <ShopFilter fopen={fopen} setfOpen={setfOpen} selectedBrand={selectedBrand} setslectedBrand={setslectedBrand} selectedGender={selectedGender} setselectedGender={setselectedGender} selectedMatarial={selectedMatarial} setselectedMatarial={setselectedMatarial} selectedPrice={selectedPrice} setselectedPrice={setselectedPrice} selectedLenWidth={selectedLenWidth} setselectedLenWidth={setselectedLenWidth} selectedBrideWidth={selectedBrideWidth} setselectedBrideWidth={setselectedBrideWidth} handleClearFilter={handleClearFilter} filterLength={filteredProducts?.length} selectedFrameType={selectedFrameType} setselectedFrameType={setselectedFrameType} selectedFrameShape={selectedFrameShape} setselectedFrameShape={setselectedFrameShape} />
+                        <ShopFilter fopen={fopen} setfOpen={setfOpen} selectedBrand={selectedBrand} setslectedBrand={setslectedBrand} selectedGender={selectedGender} setselectedGender={setselectedGender} selectedMatarial={selectedMatarial} setselectedMatarial={setselectedMatarial} selectedPrice={selectedPrice} setselectedPrice={setselectedPrice} selectedLenWidth={selectedLenWidth} setselectedLenWidth={setselectedLenWidth} selectedBrideWidth={selectedBrideWidth} setselectedBrideWidth={setselectedBrideWidth} handleClearFilter={handleClearFilter} filterLength={prescriptionsSunglasses?.length} selectedFrameType={selectedFrameType} setselectedFrameType={setselectedFrameType} selectedFrameShape={selectedFrameShape} setselectedFrameShape={setselectedFrameShape} brandList={allBrandList} />
                     </div>
 
 

@@ -7,7 +7,7 @@ import ProductCard from "../../../components/ProductCard";
 import ProductNotFound from "../../../components/ProductNotFound";
 import ShopFilter from "../../../components/ShopFilter";
 import ProductGridSkeleton from '../../../components/skalaton/ProductGridSkeleton';
-
+import searchProducts from "../../../lib/searchProducts";
 
 const breadcrumbs = [
     { label: 'Home', href: '/' },
@@ -26,6 +26,7 @@ export default function ProductPage() {
 
     const [searchLoading, setsearchLoading] = useState(false);
     const [fopen, setfOpen] = useState(false);
+    const [search, setSearch] = useState('');
     const [selectedBrand, setslectedBrand] = useState([]);
     const [selectedGender, setselectedGender] = useState(["Womens"]);
     const [selectedMatarial, setselectedMatarial] = useState([]);
@@ -35,8 +36,7 @@ export default function ProductPage() {
     const [selectedLenWidth, setselectedLenWidth] = useState({ min: 20, max: 70 });
     const [selectedBrideWidth, setselectedBrideWidth] = useState({ min: 10, max: 90 });
     const [filteredProducts, setfilteredProducts] = useState([]);
-
-
+    const [allBrandList, setallBrandList] = useState([]);
 
 
 
@@ -45,7 +45,7 @@ export default function ProductPage() {
     const fetchProducts = async () => {
         try {
             // Make API call to get all the product
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/allproducts`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/allproducts/womens`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,8 +65,31 @@ export default function ProductPage() {
     };
 
 
+    const fetchSettingsData = async () => {
+        setLoading(true);
+        try {
+            // Make API call to get all the product
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const res = await response.json();
+            const allBrands = res?.data?.brands?.filter(brand => brand.forProduct === "Frame");
+            setallBrandList(allBrands);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            setLoading(false);
+        }
+    };
+
+
     useEffect(() => {
         fetchProducts();
+        fetchSettingsData();
     }, [])
 
 
@@ -203,6 +226,12 @@ export default function ProductPage() {
 
 
 
+
+    const filteredMensProducts = searchProducts(filteredProducts, search);
+
+
+
+
     if (loading) {
         return <ProductGridSkeleton />
     }
@@ -214,18 +243,23 @@ export default function ProductPage() {
 
             <Container>
 
-                <ProductBreadcrumb breadcrumbs={breadcrumbs} />
+                <div className="flex items-center justify-between py-0">
+                    <ProductBreadcrumb breadcrumbs={breadcrumbs} />
+                    <div className="hidden">
+                        <input value={search} onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search By Name..." className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none" />
+                    </div>
+                </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
                     <div className={`lg:col-span-1 p-4 border border-gray-200 bg-white max-h-[500px] lg:max-h-[700px] w-full z-40 ${fopen ? 'sticky top-[75px]' : 'lg:sticky lg:top-[75px]'}`}>
-                        <ShopFilter fopen={fopen} setfOpen={setfOpen} selectedBrand={selectedBrand} setslectedBrand={setslectedBrand} selectedGender={selectedGender} setselectedGender={setselectedGender} selectedMatarial={selectedMatarial} setselectedMatarial={setselectedMatarial} selectedPrice={selectedPrice} setselectedPrice={setselectedPrice} selectedLenWidth={selectedLenWidth} setselectedLenWidth={setselectedLenWidth} selectedBrideWidth={selectedBrideWidth} setselectedBrideWidth={setselectedBrideWidth} handleClearFilter={handleClearFilter} filterLength={filteredProducts?.length} selectedFrameType={selectedFrameType} setselectedFrameType={setselectedFrameType} selectedFrameShape={selectedFrameShape} setselectedFrameShape={setselectedFrameShape} />
+                        <ShopFilter fopen={fopen} setfOpen={setfOpen} selectedBrand={selectedBrand} setslectedBrand={setslectedBrand} selectedGender={selectedGender} setselectedGender={setselectedGender} selectedMatarial={selectedMatarial} setselectedMatarial={setselectedMatarial} selectedPrice={selectedPrice} setselectedPrice={setselectedPrice} selectedLenWidth={selectedLenWidth} setselectedLenWidth={setselectedLenWidth} selectedBrideWidth={selectedBrideWidth} setselectedBrideWidth={setselectedBrideWidth} handleClearFilter={handleClearFilter} filterLength={filteredProducts?.length} selectedFrameType={selectedFrameType} setselectedFrameType={setselectedFrameType} selectedFrameShape={selectedFrameShape} setselectedFrameShape={setselectedFrameShape} brandList={allBrandList} />
                     </div>
 
 
                     {
-                        filteredProducts?.length > 0 ? (
+                        filteredMensProducts?.length > 0 ? (
                             <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4 lg:gap-6">
-                                {filteredProducts?.map((item, index) => (
+                                {filteredMensProducts?.map((item, index) => (
                                     <div key={index} className="text-center">
                                         <ProductCard item={item} />
                                     </div>

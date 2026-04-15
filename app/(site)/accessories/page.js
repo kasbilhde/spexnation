@@ -1,6 +1,5 @@
 'use client'
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import Container from "../../../components//Container";
 import AccessoriesCard from "../../../components/AccessoriesCard";
@@ -21,8 +20,6 @@ export default function ProductPage() {
     const [loading, setLoading] = useState(true);
     const [allAccessories, setallAccessories] = useState([]);
 
-
-
     const [searchLoading, setsearchLoading] = useState(false);
     const [fopen, setfOpen] = useState(false);
     const [selectedBrand, setslectedBrand] = useState([]);
@@ -32,10 +29,6 @@ export default function ProductPage() {
     const [selectedLenWidth, setselectedLenWidth] = useState({ min: 20, max: 50 });
     const [selectedBrideWidth, setselectedBrideWidth] = useState({ min: 10, max: 90 });
     const [filteredAccessories, setfilteredAccessories] = useState([]);
-
-
-    const [isDevelopment, setisDevelopment] = useState(false);
-
 
 
     const fetchAccessories = async () => {
@@ -165,6 +158,7 @@ export default function ProductPage() {
 
 
 
+
     if (loading) {
         return <ProductGridSkeleton />
     }
@@ -174,22 +168,11 @@ export default function ProductPage() {
     return (
         <main className="h-fit bg-gray-100 relative">
 
-            {isDevelopment && (
-                <div className="fixed inset-0 w-screen h-screen bg-black/40 z-50 flex items-center justify-center">
-                    <div className="w-fit h-fit bg-white px-14 py-20">
-                        <div className="text-2xl text-gray-400">
-                            Accessories page is Under Development
-                        </div>
-                        <div className="w-full flex items-center justify-center">
-                            <Link className="w-fit bg-yellow-600 text-white px-2 py-1 mt-4" href="/">Go back to Home</Link>
-                        </div>
-                    </div>
-                </div>
-            )}
-
             <Container>
 
+
                 <ProductBreadcrumb breadcrumbs={breadcrumbs} />
+
 
                 <div className="hidden grid grid-cols-1 lg:grid-cols-5 gap-4">
                     <div className={`lg:col-span-1 p-4 border border-gray-200 bg-white max-h-[500px] lg:max-h-[700px] w-full z-40 ${fopen ? 'sticky top-[75px]' : 'lg:sticky lg:top-[75px]'}`}>

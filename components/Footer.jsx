@@ -1,7 +1,8 @@
 'use client'
 
-import { Facebook, Instagram, Link as LinkIcon, Music, Twitter } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import Link from "next/link";
+import { FaPinterest, FaTiktok } from "react-icons/fa";
 
 
 export default function Footer() {
@@ -87,39 +88,55 @@ export default function Footer() {
           <div>
             <div className="flex gap-4">
               <a
-                href="#"
+                target="_blank"
+                href="https://www.instagram.com/spexnation_"
                 className="w-10 h-10 rounded-full pBg flex items-center justify-center text-white hover:bg-gray-700 transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
               </a>
               <a
-                href="#"
+                target="_blank"
+                href="https://www.facebook.com/spexnation0/"
                 className="w-10 h-10 rounded-full pBg flex items-center justify-center text-white hover:bg-gray-700 transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook size={20} />
               </a>
               <a
-                href="#"
+                target="_blank"
+                href="https://x.com/spexnation_"
                 className="w-10 h-10 rounded-full pBg flex items-center justify-center text-white hover:bg-gray-700 transition-colors"
                 aria-label="Twitter"
               >
                 <Twitter size={20} />
               </a>
+
               <a
-                href="#"
-                className="w-10 h-10 rounded-full pBg flex items-center justify-center text-white hover:bg-gray-700 transition-colors"
-                aria-label="TikTok"
-              >
-                <Music size={20} />
-              </a>
-              <a
-                href="#"
+                target="_blank"
+                href="https://www.linkedin.com/company/spexnation"
                 className="w-10 h-10 rounded-full pBg flex items-center justify-center text-white hover:bg-gray-700 transition-colors"
                 aria-label="Website"
               >
-                <LinkIcon size={20} />
+                <Linkedin size={20} />
+              </a>
+
+
+              <a
+                target="_blank"
+                href="https://www.tiktok.com/@spexnation_"
+                className="w-10 h-10 rounded-full pBg flex items-center justify-center text-white hover:bg-gray-700 transition-colors"
+                aria-label="TikTok"
+              >
+                <FaTiktok />
+              </a>
+              <a
+                target="_blank"
+                href="https://www.pinterest.com/spexnation/"
+                className="w-10 h-10 rounded-full pBg flex items-center justify-center text-white hover:bg-gray-700 transition-colors"
+                aria-label="Website"
+              >
+                <FaPinterest className="w-5 h-5" />
               </a>
             </div>
           </div>

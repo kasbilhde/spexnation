@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import DashboardProductCard from "../../../../../components/Deshboard/DashboardProductCard";
 import Loading from "../../../../../components/Loading";
+import searchProducts from "../../../../../lib/searchProducts";
 
 
 const glasses = [
@@ -105,13 +106,6 @@ const AllproductPage = () => {
 
 
 
-    function searchProducts(items, query) {
-        if (!query) return items;
-
-        return items.filter(item =>
-            item.ProductTitle.toLowerCase().includes(query.toLowerCase())
-        );
-    }
 
     const filteredProducts = searchProducts(allProducts, search);
 
@@ -132,7 +126,9 @@ const AllproductPage = () => {
     return (
         <div className=" bg-white py-5 px-5  border border-gray-200">
             <div className="flex items-center justify-between">
-                <h1 className="text-xl font-medium text-gray-600">All Products</h1>
+                <div>
+                    <h1 className="text-xl font-medium text-gray-600">All Products</h1> {allProducts?.length > 0 && <span className="text-sm text-gray-500">({allProducts?.length} Products)</span>}
+                </div>
                 <div className="flex items-center gap-4">
                     <div className="hidden md:block">
                         <input value={search} onChange={(e) => setSearch(e.target.value)} type="text" placeholder="Search By Name..." className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none" />

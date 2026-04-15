@@ -55,7 +55,7 @@ export default function PrivacyPolicy() {
                     </h1>
                     <div className="w-10 h-0.5 bg-white mb-6" />
                     <p className="text-gray-400 text-sm max-w-xl leading-relaxed">
-                        This Privacy Policy explains how Spexnation, operated by Wakasim Ltd, collects, uses,
+                        This Privacy Policy explains how Spexnation, operated by Spexnation Limited, collects, uses,
                         and protects your personal information when you use our website.
                     </p>
                 </div>
@@ -94,7 +94,7 @@ export default function PrivacyPolicy() {
                             <div className="border-t border-gray-100 pt-6">
                                 <p className="text-gray-600 text-sm leading-relaxed mb-5">Spexnation is operated by:</p>
                                 <div className="bg-gray-50 border border-gray-100 px-6 py-5 text-sm text-gray-700 leading-relaxed">
-                                    <p className="font-bold text-black mb-1">Wakasim Ltd</p>
+                                    <p className="font-bold text-black mb-1">Spexnation Limited</p>
                                     <p>228 Walmersley Road</p>
                                     <p>Bury</p>
                                     <p>BL9 6NH</p>

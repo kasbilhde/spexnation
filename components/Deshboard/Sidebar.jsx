@@ -1,7 +1,8 @@
 'use client';
 
 
-import { Code, FileText, Home, PackageSearch, Puzzle, Settings, Target, User, X } from 'lucide-react';
+import { Code, FileText, Home, PackageSearch, Puzzle, Settings, Signpost, Target, User, X } from 'lucide-react';
+
 
 import Image from "next/image";
 import Link from "next/link";
@@ -21,7 +22,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         { icon: PackageSearch, label: 'All Products', href: '/dashboard/admin/allproducts' },
         { icon: Puzzle, label: 'Add Accessories', href: '/dashboard/admin/addaccessories' },
         { icon: Code, label: 'Coupon Code', href: '/dashboard/admin/coupon' },
-        // { icon: PaintRoller, label: 'Add Colour', href: '/dashboard/admin/colour' },
+        { icon: Signpost, label: 'Add Banner', href: '/dashboard/admin/banner' },
         { icon: Settings, label: 'Site Settings', href: '/dashboard/admin/settings' },
     ];
 

@@ -1,35 +1,34 @@
 'use client';
 
-import { Trash } from "lucide-react";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import namer from "color-namer";
+import { Trash, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { GoPlusCircle } from "react-icons/go";
-import { RxCross2 } from "react-icons/rx";
 import Loading from "../../../../../components/Loading";
-import clearFileInput from "../../../../../lib/clearFileInput";
-import fileToBase64 from "../../../../../lib/fileToBase64";
 import getTookn from "../../../../../lib/getTookn";
-import defaultImage from "../../../../../public/defaultImage.png";
+
 
 
 const AccessoriesPage = () => {
 
 
-    const fileInputRef = useRef(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [currentTab, setCurrentTab] = useState('brand');
     const [token, settoken] = useState(null);
-    const [Route, setRoute] = useState('');
-    const [allAccessories, setallAccessories] = useState([]);
+    const [ColourCode, setColourCode] = useState('#BABABA');
+    const [ColourName, setColourName] = useState('Silver');
+    const [forproduct, setforproduct] = useState('normal');
+    const [brandName, setbrandName] = useState('');
+    const [allSettings, setallSettings] = useState([]);
     const [img, setimg] = useState('');
     const [rowID, setrowID] = useState('');
 
 
-    const fetchAccessories = async () => {
+    const fetchSettingsData = async () => {
         setIsLoading(true);
         try {
             // Make API call to get all the product
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/allbanner`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,7 +36,7 @@ const AccessoriesPage = () => {
             });
 
             const res = await response.json();
-            setallAccessories(res?.data);
+            setallSettings(res?.data);
             setIsLoading(false);
         } catch (error) {
             console.error('Error fetching products:', error);
@@ -49,46 +48,52 @@ const AccessoriesPage = () => {
     useEffect(() => {
         const tkn = getTookn();
         settoken(tkn);
-        fetchAccessories();
+        fetchSettingsData();
     }, [])
 
 
 
-    // handle add product form submission is here
-    const handleAccessories = async (e) => {
+    // handle add colour form submission is here
+    const handleAddColour = async (e) => {
 
 
         e.preventDefault();
 
 
-        if (!Route || !img) {
+        if (!ColourName || !ColourCode) {
             toast.error('Please fill in all the required fields.');
             return;
         }
 
+
         setIsLoading(true);
 
+        const formData = {
+            name: ColourName,
+            value: ColourCode,
+        }
+
+
         // Make API call to add the product
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/addbanner`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings/addcolour`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 "authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ Route: Route, img: img, productType: "banner" }),
+            body: JSON.stringify(formData),
         });
 
         const res = await response.json();
 
         setIsLoading(false);
 
-        console.log(res);
 
         if (res.success) {
             toast.success(res.message);
-            setRoute('');
-            handleRemovedImage(e);
-            fetchAccessories();
+            setColourName('Silver');
+            setColourCode('#BABABA');
+            fetchSettingsData();
         } else {
             toast.error(res.message);
         }
@@ -98,8 +103,64 @@ const AccessoriesPage = () => {
 
 
 
-    // handle delect coupon function is here
-    const handleDeleteAccessories = async (e, id) => {
+
+    // handle add brand form submission is here
+    const handleAddBrand = async (e) => {
+
+
+        e.preventDefault();
+
+
+        if (!brandName || !forproduct) {
+            toast.error('Please fill in all the required fields.');
+            return;
+        }
+
+
+        const formData = {
+            brandName: brandName,
+            forProduct: forproduct
+        };
+
+
+        setIsLoading(true);
+
+
+
+
+        // Make API call to add the product
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings/addbrand`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify(formData),
+        });
+
+        const res = await response.json();
+
+        setIsLoading(false);
+
+
+        if (res.success) {
+            toast.success(res.message);
+            setbrandName('');
+            setforproduct('');
+            fetchSettingsData();
+        } else {
+            toast.error(res.message);
+        }
+
+
+    }
+
+
+
+
+
+    // handle delect colour function is here
+    const handleDeleteColour = async (e, id) => {
 
         e.preventDefault();
 
@@ -108,7 +169,7 @@ const AccessoriesPage = () => {
 
         try {
             // Make API call to get all the product
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/deletebanner/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings/deletecolour/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -117,7 +178,7 @@ const AccessoriesPage = () => {
             });
 
             const res = await response.json();
-            fetchAccessories();
+            fetchSettingsData();
             toast.success(res.message);
         } catch (error) {
             console.error('Error fetching Accessories:', error);
@@ -130,31 +191,50 @@ const AccessoriesPage = () => {
 
 
 
+    // handle delect brand function is here
+    const handleDeleteBrand = async (e, id) => {
 
-
-    // handle prescription file changes is here
-    async function handleImageChange(e) {
-
-        const file = e.target.files[0];
-        const base64 = await fileToBase64(file);
-        setimg(base64);
-
-    }
-
-
-
-    // handle remove function is here
-    function handleRemovedImage(e) {
         e.preventDefault();
-        clearFileInput(fileInputRef);
-        setimg('');
+
+
+        setIsLoading(true);
+
+        try {
+            // Make API call to get all the product
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings/deletebrand/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "authorization": `Bearer ${token}`,
+                }
+            });
+
+            const res = await response.json();
+            fetchSettingsData();
+            toast.success(res.message);
+        } catch (error) {
+            console.error('Error fetching Accessories:', error);
+        }
+
+        setIsLoading(false);
+
     }
 
 
 
+    // handle color change function is here
+    function handleColorChange(e) {
+        e.preventDefault();
+        setColourCode(e.target.value);
+        const colorName = namer(e.target.value).ntc[0].name;
+        setColourName(colorName);
+    }
 
-    console.log(allAccessories);
 
+
+    const brandsForNormalGlasses = allSettings["brands"]?.filter(brand => brand.forProduct === "Frame");
+    const brandsForPrescriptionSunglasses = allSettings["brands"]?.filter(brand => brand.forProduct === "Prescription Sunglasses");
+    const brandsForNonPrescriptionSunglasses = allSettings["brands"]?.filter(brand => brand.forProduct === "Non-Prescription Sunglasses");
 
 
 
@@ -171,140 +251,242 @@ const AccessoriesPage = () => {
 
     return (
         <div className=" bg-white py-4 px-5  border border-gray-200">
-            <h1 className="text-xl font-medium text-gray-600">Site Settings</h1>
 
-            <div className="mt-4  grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div>
-                    <div className="mb-3">
-                        <label className="text-gray-400 flex items-start gap-1">
-                            Bannar Route Path <span className="text-md text-red-600">*</span>
-                        </label>
-                        <input value={Route} onChange={(e) => setRoute(e.target.value)} type="text" className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600" />
+            <div className="flex items-center justify-between">
+
+                <div className="flex items-center gap-4">
+                    <h1 className="text-xl font-medium text-gray-600 text-nowrap">{currentTab === 'colour' ? 'Add Colour' : 'Add Brand'}</h1>
+
+                    <div className="flex items-center gap-1">
+                        <button onClick={() => setCurrentTab('colour')} className={`text-gray-100 cursor-pointer text-sm px-1 cursor-pointer ${currentTab === 'colour' ? 'pBg' : 'bg-gray-400'}`}>Colour</button>
+                        <button onClick={() => setCurrentTab('brand')} className={`text-gray-100 cursor-pointer text-sm  px-1 cursor-pointer ${currentTab === 'brand' ? 'pBg' : 'bg-gray-400'}`}>Brand</button>
                     </div>
-
-                    <div className="">
-                        <label className="text-md text-gray-600/80 flex flex-col">
-                            <span>
-                                Upload Hero Banner Image <span className="text-md text-red-600">*</span>
-                            </span>
-                            <span className="text-[10px] bg-yellow-100 text-gray-700 px-1 w-fit">jpg, jpeg, png and webp files are allowed</span>
-                            <span className="mt-1 text-[10px] bg-red-200 text-gray-700 px-1 w-fit">Image Must be at least 1900px x 600px and Image Text Max Width Container 1280px</span>
-                        </label>
-                        <div className="flex items-center gap-2 mt-2 h-full">
-                            <input
-                                id="file2"
-                                ref={fileInputRef}
-                                type="file"
-                                accept=".png,.jpg,.jpeg,.webp"
-                                onChange={(e) => { handleImageChange(e) }}
-                                className="hidden w-full border p-2 rounded-md focus:outline-yellow-500/60 text-gray-700/80 cursor-pointer"
-                            />
-
-                            {
-                                img ? (
-
-                                    <div>
-                                        <div className="relative w-auto h-[60px] md:h-[100px] border border-gray-200 text-gray-500/40 bg-gray-200">
-
-                                            <Image className="w-full h-full object-cover" src={img ? img : defaultImage} width={100} height={1000} alt="prescription" />
+                </div>
 
 
-                                            <div onClick={(e) => { handleRemovedImage(e) }} className="absolute top-0 right-0 w-4 h-4 bg-yellow-600 text-white translate-x-1/2 -translate-y-1/2 rounded-full flex items-center justify-center cursor-pointer">
-                                                <RxCross2 />
-                                            </div>
+                <div className="w-full flex justify-end">
+                    <button onClick={(e) => { currentTab === 'colour' ? handleAddColour(e) : handleAddBrand(e) }} className="bg-yellow-700 flex items-center  justify-center text-white px-4 py-2 hover:bg-yellow-800">
+                        {
+                            isLoading ? <Loading /> : currentTab === 'colour' ? 'Add Colour' : 'Add Brand'
+                        }
+                    </button>
+                </div>
+
+            </div>
+
+
+
+
+
+            {
+                currentTab === 'brand' && (
+                    <div className="mt-4  flex items-center flex-col justify-between gap-4">
+
+                        <div className="w-full flex gap-4">
+                            <div className="mb-3 w-full">
+                                <label className="text-gray-400 flex items-start gap-1">
+                                    For Product <span className="text-md text-red-600">*</span>
+                                </label>
+                                <select value={forproduct} onChange={(e) => setforproduct(e.target.value)} className="w-full focus:outline-none border border-gray-200 px-3 py-1.5 cursor-pointer">
+                                    <option value="">Select Product Type</option>
+                                    <option value="Frame">For Normal Glasses</option>
+                                    <option value="Prescription Sunglasses">For Prescription Sunglasses</option>
+                                    <option value="Non-Prescription Sunglasses">For Non Prescription Sunglasses</option>
+                                </select>
+                            </div>
+                            <div className="mb-3 w-full">
+                                <label className="text-gray-400 flex items-start gap-1">
+                                    Brand Name <span className="text-md text-red-600">*</span>
+                                </label>
+                                <input value={brandName} onChange={(e) => setbrandName(e.target.value)} type="text" className={`w-full focus:outline-none border border-gray-200 px-3 py-1 cursor-pointer`} />
+                            </div>
+                        </div>
+                    </div >
+                )
+            }
+
+
+            {
+                currentTab === 'colour' && (
+                    <div className="mt-4  flex items-center flex-col justify-between gap-4">
+
+                        <div className="w-full flex gap-4">
+                            <div className="mb-3 w-full">
+                                <label className="text-gray-400 flex items-start gap-1">
+                                    Colour Code <span className="text-md text-red-600">*</span>
+                                </label>
+                                <input style={{ backgroundColor: ColourCode }} value={ColourCode} onChange={(e) => handleColorChange(e)} type="color" className={`w-full focus:outline-none cursor-pointer h-9`} />
+                            </div>
+                            <div className="mb-3 w-full">
+                                <label className="text-gray-400 flex items-start gap-1">
+                                    Colour Name <span className="text-md text-red-600">*</span>
+                                </label>
+                                <input value={ColourName} onChange={(e) => setColourName(e.target.value)} type="text" className={`w-full focus:outline-none border border-gray-200 px-3 py-1 cursor-pointer`} />
+                            </div>
+                        </div>
+                    </div >
+                )
+            }
+
+
+
+
+            {
+                currentTab === 'colour' && (
+                    <div className="mt-8">
+                        <div className="">
+                            <div className="flex items-center justify-between">
+                                <h1 className="text-xl font-medium text-gray-600">All Colours List : {allSettings["colours"]?.length}</h1>
+                            </div>
+                            <div className="mt-6 overflow-x-auto">
+                                <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
+                                    <thead className="bg-gray-100">
+                                        <tr className="text-center">
+                                            <th className="p-3 border">Sl</th>
+                                            <th className="p-3 border">Colour Name</th>
+                                            <th className="p-3 border">Colour Name</th>
+                                            <th className="p-3 border">Colour Code</th>
+                                            <th className="p-3 border">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody className="text-center">
+                                        {allSettings["colours"]?.map((row, index) => (
+                                            <tr key={index} className="hover:bg-gray-50">
+
+                                                <td className="p-2 border text-center text-gray-500">
+                                                    {index + 1}
+                                                </td>
+
+                                                <td className="p-2 border text-center text-gray-500 flex justify-center items-center">
+                                                    <div style={{ backgroundColor: row?.value }} className="w-10 h-10" />
+                                                </td>
+
+
+                                                <td className="p-2 border text-center text-gray-500">
+                                                    {
+                                                        row?.name
+                                                    }
+                                                </td>
+                                                <td className="p-2 border text-center text-gray-500">
+                                                    {
+                                                        row?.value
+                                                    }
+                                                </td>
+                                                <td className="p-2 border-b text-center text-gray-500">
+
+
+
+                                                    <button onClick={(e) => handleDeleteColour(e, row?._id)} className="bg-red-400 cursor-pointer text-white px-1 py-1">
+                                                        <Trash size={17} />
+                                                    </button>
+
+
+
+                                                </td>
+
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div >
+                    </div>
+                )
+            }
+
+
+            {
+                currentTab === 'brand' && (
+
+                    <div className="mt-8">
+                        <div className="">
+                            <div className="flex items-center justify-between">
+                                <h1 className="text-xl font-medium text-gray-600">All Brands List: {allSettings["brands"]?.length}</h1>
+                            </div>
+                            <div className="mt-6 overflow-x-auto">
+                                <div className="w-full grid grid-cols-12 gap-4">
+                                    <div className="bg-gray-100 p-4 col-span-12 md:col-span-4">
+                                        <div className="flex items-center justify-between">
+                                            <h3 className="text-lg font-medium text-gray-600">For Normal Glasses</h3>
+                                            <span className="text-sm text-gray-500">Total: {brandsForNormalGlasses?.length}</span>
+                                        </div>
+                                        <div className="mt-4">
+                                            <ul>
+                                                {
+                                                    brandsForNormalGlasses?.map((brand, index) => (
+                                                        <li key={index} className="flex items-center justify-between mb-2">
+                                                            <span>{brand?.brandName}</span>
+                                                            <button onClick={(e) => handleDeleteBrand(e, brand?._id)} className="bg-red-400 cursor-pointer text-white px-1 py-1 cursor-pointer">
+                                                                <Trash2 size={14} />
+                                                            </button>
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
                                         </div>
                                     </div>
 
-                                ) : (
-
-                                    <div className="flex items-center gap-2">
-                                        <label htmlFor="file2">
-                                            <div className="flex items-center gap-2 justify-center flex-col cursor-pointer w-full h-full border border-gray-200 bg-gray-100 p-2">
-                                                <GoPlusCircle className="text-5xl text-gray-300" />
-                                            </div>
-                                        </label>
+                                    <div className="bg-gray-100 p-4 col-span-12 md:col-span-4">
+                                        <div className="flex items-center justify-between">
+                                            <h3 className="text-lg font-medium text-gray-600">For Prescription Sunglasses</h3>
+                                            <span className="text-sm text-gray-500">Total: {brandsForPrescriptionSunglasses?.length}</span>
+                                        </div>
+                                        <div className="mt-4">
+                                            <ul>
+                                                {
+                                                    brandsForPrescriptionSunglasses?.map((brand, index) => (
+                                                        <li key={index} className="flex items-center justify-between mb-2">
+                                                            <span>{brand?.brandName}</span>
+                                                            <button onClick={(e) => handleDeleteBrand(e, brand?._id)} className="bg-red-400 cursor-pointer text-white px-1 py-1 cursor-pointer">
+                                                                <Trash2 size={14} />
+                                                            </button>
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        </div>
                                     </div>
-                                )
-                            }
-
-                        </div>
-                    </div>
-                </div >
-
-            </div >
 
 
-            <div className="flex justify-end">
-                <button onClick={(e) => { handleAccessories(e) }} className="mt-4 bg-yellow-700 flex items-center  justify-center text-white px-4 py-2 hover:bg-yellow-800">
-                    {
-                        isLoading ? <Loading /> : 'Add Banner'
-                    }
-                </button>
-            </div>
+                                    <div className="bg-gray-100 p-4 col-span-12 md:col-span-4">
+                                        <div className="flex items-center justify-between">
+                                            <h3 className="text-lg font-medium text-gray-600">For Non Prescription Sunglasses</h3>
+                                            <span className="text-sm text-gray-500">Total: {brandsForNonPrescriptionSunglasses?.length}</span>
+                                        </div>
+                                        <div className="mt-4">
+                                            <ul>
+                                                {
+                                                    brandsForNonPrescriptionSunglasses?.map((brand, index) => (
+                                                        <li key={index} className="flex items-center justify-between mb-2">
+                                                            <span>{brand?.brandName}</span>
+                                                            <button onClick={(e) => handleDeleteBrand(e, brand?._id)} className="bg-red-400 cursor-pointer text-white px-1 py-1 cursor-pointer">
+                                                                <Trash2 size={14} />
+                                                            </button>
+                                                        </li>
+                                                    ))
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-
-
-
-
-
-
-
-
-
-            <div className="mt-8">
-                <div className="">
-                    <div className="flex items-center justify-between">
-                        <h1 className="text-xl font-medium text-gray-600">All Hero Banner : {allAccessories?.length}</h1>
-                    </div>
-                    <div className="mt-6 overflow-x-auto">
-                        <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
-                            <thead className="bg-gray-100">
-                                <tr className="text-center">
-                                    <th className="p-3 border">Sl</th>
-                                    <th className="p-3 border">Image</th>
-                                    <th className="p-3 border">Route Path</th>
-                                    <th className="p-3 border">Action</th>
-                                </tr>
-                            </thead>
-
-                            <tbody className="text-center">
-                                {allAccessories?.map((row, index) => (
-                                    <tr key={index} className="hover:bg-gray-50">
-
-                                        <td className="p-2 border text-center text-gray-500">
-                                            {index + 1}
-                                        </td>
-
-                                        <td className="p-2 border text-center text-gray-500 flex justify-center items-center">
-                                            <div className="bg-gray-100 w-auto h-[80px]">
-                                                <Image src={row?.img} alt="accessoriseImage" className="w-full h-full" width="1000" height="1000" />
-                                            </div>
-                                        </td>
-
-
-                                        <td className="p-2 border text-center text-gray-500">
-                                            {row?.Route}
-                                        </td>
-                                        <td className="p-2 border-b text-center text-gray-500">
-
-
-
-                                            <button onClick={(e) => handleDeleteAccessories(e, row?._id)} className="bg-red-400 cursor-pointer text-white px-1 py-1">
-                                                <Trash size={17} />
-                                            </button>
-
-
-
-                                        </td>
-
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
+                        </div >
                     </div>
 
-                </div >
-            </div>
+                )
+            }
+
+
+
+
+
+
+
+
+
 
             <Toaster />
         </div >

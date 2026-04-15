@@ -74,7 +74,7 @@ export default function CookiePolicy() {
                     </h1>
                     <div className="w-10 h-0.5 bg-white mb-6" />
                     <p className="text-gray-400 text-sm max-w-xl leading-relaxed">
-                        This Cookie Policy explains how Spexnation, operated by Wakasim Ltd, uses cookies and
+                        This Cookie Policy explains how Spexnation, operated by Spexnation Limited, uses cookies and
                         similar technologies when you visit our website.
                     </p>
                 </div>
