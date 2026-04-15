@@ -58,6 +58,12 @@ function PrescriptionInputer() {
         if (lens?.sph.rightSph == '0' && lens?.sph.leftSph == '0') {
             toast.error("Must be select OD or OS Sphere");
             return;
+        } else if (lens?.sph.rightSph != '0' && lens?.sph.leftSph == '0') {
+            toast.error("Must be select Left Sphere");
+            return;
+        } else if (lens?.sph.rightSph == '0' && lens?.sph.leftSph != '0') {
+            toast.error("Must be select Right Sphere");
+            return;
         } else {
 
 
