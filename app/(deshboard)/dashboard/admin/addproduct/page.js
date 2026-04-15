@@ -1,6 +1,5 @@
 'use client';
 
-import namer from "color-namer";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -10,6 +9,14 @@ import { RxCross2 } from "react-icons/rx";
 import Loading from "../../../../../components/Loading";
 import fileToBase64 from "../../../../../lib/fileToBase64";
 import getTookn from "../../../../../lib/getTookn";
+
+
+const productTypes = [
+    "Frame",
+    "Prescription Sunglasses",
+    "Non-Prescription Sunglasses"
+]
+
 
 const brands = [
     "Ambri",
@@ -28,6 +35,7 @@ const brands = [
 ];
 
 
+
 const AddproductPage = () => {
 
     const router = useRouter();
@@ -35,8 +43,8 @@ const AddproductPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [token, setToken] = useState(null);
 
+    const [productType, setProductType] = useState('');
     const [brand, setbrand] = useState('');
-    const [sunglassType, setsunglassType] = useState('');
     const [title, settitle] = useState('');
     const [shortdes, setshortdes] = useState('');
     const [price, setprice] = useState('');
@@ -55,11 +63,47 @@ const AddproductPage = () => {
 
 
 
+    const [allBrandsList, setallBrandsList] = useState([]);
+    const [allcolorsList, setallcolorsList] = useState([]);
+
+    const fetchSettingsData = async () => {
+        setIsLoading(true);
+        try {
+            // Make API call to get all the product
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const res = await response.json();
+            setallBrandsList(res?.data?.brands);
+            setallcolorsList(res?.data?.colours);
+            setIsLoading(false);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+            setIsLoading(false);
+        }
+    };
+
+
+
 
     useEffect(() => {
         const tkn = getTookn();
         setToken(tkn);
+
+        fetchSettingsData();
+
     }, [])
+
+
+
+
+    const corespondingBrands = allBrandsList?.filter((item) => {
+        return item?.forProduct === productType;
+    });
 
 
 
@@ -69,7 +113,8 @@ const AddproductPage = () => {
         e.preventDefault();
 
 
-        if (!brand || !title || !shortdes || !price || !fType || !description || gellary.length < 1) {
+
+        if (!productType || !brand || !title || !shortdes || !price || !fType || !description || gellary.length < 1) {
 
             toast.error('Please fill in all the required fields.');
             return;
@@ -78,6 +123,7 @@ const AddproductPage = () => {
         setIsLoading(true);
 
         const data = {
+            frameType: productType,
             brand: brand,
             ProductTitle: title,
             shortdes: shortdes,
@@ -91,7 +137,6 @@ const AddproductPage = () => {
             lensHeight: lensHeight,
             BridgeWidth: BridgeWidth,
             ArmLength: ArmLength,
-            sunglassesType: sunglassType,
             product_Images: gellary,
             product_Discription: description,
             productType: "Frame"
@@ -112,6 +157,7 @@ const AddproductPage = () => {
 
         if (res.success) {
             toast.success(res.message);
+            setProductType('');
             setbrand('');
             settitle('');
             setshortdes('');
@@ -122,7 +168,6 @@ const AddproductPage = () => {
             setfType('');
             setfShape('');
             setlensWidth('');
-            setsunglassType('');
             setlensHeight('');
             setBridgeWidth('');
             setArmLength('');
@@ -163,12 +208,7 @@ const AddproductPage = () => {
             ...prev,
             {
                 img: base64Images, // multiple base64 images
-                color: [
-                    {
-                        name: "Plum",
-                        value: "#814285"
-                    }
-                ]
+                color: []
             }
         ]);
     }
@@ -272,20 +312,11 @@ const AddproductPage = () => {
 
 
 
-
     function handleColorSelect(e, index) {
 
         e.preventDefault();
 
-
-        const cCode = e.target.value;
-        const cName = namer(e.target.value).ntc[0].name;
-
-
-        const selectedColor = {
-            name: cName,
-            value: cCode
-        };
+        const selectedColor = JSON.parse(e.target.value);
 
         setgellery(prev =>
             prev.map((item, i) => {
@@ -305,6 +336,7 @@ const AddproductPage = () => {
 
 
 
+
     return (
         <div className="bg-white py-4 px-5  border border-gray-200">
             <h1 className="text-xl font-medium text-gray-600">Add Product</h1>
@@ -318,14 +350,14 @@ const AddproductPage = () => {
 
                         <div>
                             <label className="text-gray-400 flex items-start gap-2">
-                                Brand <span className="text-xs text-red-600">Required</span>
+                                Product Type <span className="text-xs text-red-600">Required</span>
                             </label>
-                            <select value={brand} onChange={(e) => setbrand(e.target.value)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600">
-                                <option className="text-gray-400 checked:text-gray-400" value="">Select Brand</option>
+                            <select value={productType} onChange={(e) => { setProductType(e.target.value); setbrand(''); }} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600">
+                                <option className="text-gray-400 checked:text-gray-400" value="">Select Product Type</option>
 
                                 {
-                                    brands.map((item, i) => (
-                                        <option key={i} value={item}>{item}</option>
+                                    productTypes.map((item, i) => (
+                                        <option className="capitalize" key={i} value={item}>{item}</option>
                                     ))
                                 }
 
@@ -333,24 +365,21 @@ const AddproductPage = () => {
                         </div>
 
 
-                        {
-                            brand === "SUNGLASSES" && (
-                                <div>
-                                    <label className="text-gray-400 flex items-start gap-2">
-                                        Sunglasses Type <span className="text-xs text-red-600">Required</span>
-                                    </label>
-                                    <select value={sunglassType} onChange={(e) => setsunglassType(e.target.value)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600">
-                                        <option className="text-gray-400 checked:text-gray-400" value="">Select Sunglasses Type</option>
+                        <div>
+                            <label className="text-gray-400 flex items-start gap-2">
+                                Brand <span className="text-xs text-red-600">Required</span>
+                            </label>
+                            <select disabled={!productType} value={brand} onChange={(e) => setbrand(e.target.value)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600">
+                                <option className="text-gray-400 checked:text-gray-400" value="">Select Brand</option>
 
-                                        <option value={"Prescription Sunglasses"}>Prescription Sunglasses</option>
-                                        <option value={"Non-Prescription Sunglasses"}>Non-Prescription Sunglasses</option>
+                                {
+                                    corespondingBrands.map((item, i) => (
+                                        <option key={i} value={item?.brandName}>{item?.brandName}</option>
+                                    ))
+                                }
 
-                                    </select>
-                                </div>
-                            )
-                        }
-
-
+                            </select>
+                        </div>
 
 
                         <div>
@@ -542,14 +571,15 @@ const AddproductPage = () => {
                                         </div>
                                         <div className="w-full">
 
-                                            <div className="mb-3 w-full">
-                                                <label className="text-gray-400 flex items-start gap-1 flex justify-between">
-                                                    <span>Colour <span className="text-md text-red-600">*</span></span>
 
-                                                    <span>{gellary[index]?.color[0]?.name}</span>
-                                                </label>
-                                                <input style={{ backgroundColor: gellary[index]?.color[0]?.value }} value={gellary[index]?.color[0]?.value} onChange={(e) => handleColorSelect(e, index)} type="color" className={`w-full focus:outline-none cursor-pointer h-9`} />
-                                            </div>
+                                            <select onChange={(e) => handleColorSelect(e, index)} className="w-full border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-yellow-600">
+                                                <option className="text-gray-400 checked:text-gray-400" value="">Select Product Color</option>
+                                                {
+                                                    allcolorsList?.map((cl, idx) => (
+                                                        <option key={idx} className="text-gray-900 checked:text-gray-400" style={{ backgroundColor: cl?.value }} value={JSON.stringify(cl)}>{cl?.name}</option>
+                                                    ))
+                                                }
+                                            </select>
 
 
                                         </div>
@@ -580,8 +610,6 @@ const AddproductPage = () => {
 
 
             </div>
-
-
 
 
 

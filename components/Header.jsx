@@ -137,11 +137,11 @@ export default function Header() {
 
                 <div className="hidden group-hover:flex flex flex-col items-start gap-2 bg-white border border-gray-200 shadow-lg p-4 absolute top-7.5 left-0 z-40 text-left w-[260px] ">
                   <Link href="/sunglasses/prescriptions" className={`${pathName == "/sunglasses" ? "text-yellow-600" : "text-gray-600"} text-md font-light hover:underline hover:text-yellow-600`}>
-                    Prescriptions Sunglasses
+                    Prescription Sunglasses
                   </Link>
 
                   <Link href="/sunglasses/non-prescriptions" className={`${pathName == "/sunglasses" ? "text-yellow-600" : "text-gray-600"} text-md font-light hover:underline hover:text-yellow-600`}>
-                    Non Prescriptions Sunglasses
+                    Non Prescription Sunglasses
                   </Link>
                 </div>
 
@@ -224,11 +224,11 @@ export default function Header() {
 
               <div className={`${smallnavshow ? "flex" : "hidden"} flex-col items-start gap-2 bg-white border border-gray-200 shadow-lg p-4  text-left w-[260px]`}>
                 <Link onClick={() => setIsOpen(!isOpen)} href="/sunglasses/prescriptions" className="text-gray-600 hover:text-yellow-700 text-md font-light cursor-pointer">
-                  Prescriptions Sunglasses
+                  Prescription Sunglasses
                 </Link>
 
                 <Link onClick={() => setIsOpen(!isOpen)} href="/sunglasses/non-prescriptions" className="text-gray-600 hover:text-yellow-700 text-md font-light cursor-pointer">
-                  Non Prescriptions Sunglasses
+                  Non Prescription Sunglasses
                 </Link>
               </div>
 

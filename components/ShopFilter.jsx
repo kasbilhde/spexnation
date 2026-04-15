@@ -17,7 +17,6 @@ const brands = [
     "MBOS",
     "NHi",
     "Sightique",
-    "SUNGLASSES",
     "Synergy",
     "Visage",
     "Others"
@@ -61,7 +60,7 @@ const frameShape = [
 
 
 
-const ShopFilter = ({ fopen, setfOpen, selectedBrand, setslectedBrand, selectedGender, setselectedGender, selectedMatarial, setselectedMatarial, selectedFrameType, setselectedFrameType, selectedFrameShape, setselectedFrameShape, selectedPrice, setselectedPrice, selectedLenWidth, setselectedLenWidth, selectedBrideWidth, setselectedBrideWidth, handleClearFilter, filterLength }) => {
+const ShopFilter = ({ fopen, setfOpen, selectedBrand, setslectedBrand, selectedGender, setselectedGender, selectedMatarial, setselectedMatarial, selectedFrameType, setselectedFrameType, selectedFrameShape, setselectedFrameShape, selectedPrice, setselectedPrice, selectedLenWidth, setselectedLenWidth, selectedBrideWidth, setselectedBrideWidth, handleClearFilter, filterLength, brandList }) => {
 
 
 
@@ -72,10 +71,10 @@ const ShopFilter = ({ fopen, setfOpen, selectedBrand, setslectedBrand, selectedG
         e.preventDefault();
 
 
-        if (selectedBrand?.includes(item)) {
-            setslectedBrand(prev => prev.filter((i) => i !== item));
+        if (selectedBrand?.includes(item?.brandName)) {
+            setslectedBrand(prev => prev.filter((i) => i !== item?.brandName));
         } else {
-            setslectedBrand(prev => [...prev, item]);
+            setslectedBrand(prev => [...prev, item?.brandName]);
         }
     }
 
@@ -184,16 +183,16 @@ const ShopFilter = ({ fopen, setfOpen, selectedBrand, setslectedBrand, selectedG
                         <div className="ml-1">
 
                             {
-                                brands?.map((item, index) => {
+                                brandList?.map((item, index) => {
                                     return (
                                         <div key={index} onClick={(e) => handleSeletectedBrand(e, item)} className="mt-1 flex items-center gap-2">
                                             <div className="w-fit">
-                                                <div className={`flex items-center justify-center text-white cursor-pointer w-4 h-4 ${selectedBrand?.includes(item) ? "bg-yellow-600" : "bg-transparent border border-gray-300"}`}>
+                                                <div className={`flex items-center justify-center text-white cursor-pointer w-4 h-4 ${selectedBrand?.includes(item?.brandName) ? "bg-yellow-600" : "bg-transparent border border-gray-300"}`}>
                                                     <TiTick className="text-2xl" />
                                                 </div>
                                             </div>
                                             <p className="text-md text-gray-600/70">
-                                                {item}
+                                                {item?.brandName}
                                             </p>
                                         </div>
                                     )
@@ -360,26 +359,6 @@ const ShopFilter = ({ fopen, setfOpen, selectedBrand, setslectedBrand, selectedG
                 </div>
             </div>
 
-
-
-
-
-
-            {/* <div className={`${fopen ? "block" : "hidden lg:block "} ${"absolute bottom-0 w-full h-fit"}`}>
-                <button onClick={(e) => { handleSearchFunction(e) }} className="pBg text-white font-light px-6 py-2.5 transition flex items-center justify-center gap-2 w-full">
-
-
-                    {
-                        searchLoading ? (
-                            <Loading />
-                        ) : (
-                            <>
-                                Search < ArrowRight className="" size={18} />
-                            </>
-                        )
-                    }
-                </button>
-            </div> */}
         </div >
     )
 }

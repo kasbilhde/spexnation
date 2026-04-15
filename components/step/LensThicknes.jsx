@@ -47,6 +47,9 @@ export default function LensThicknes() {
     const [disAndRecommanded, setdisAndRecommanded] = useState({});
 
 
+    console.log(lens);
+
+
     //handle next function is here
     const handleNext = (e) => {
 
@@ -64,7 +67,14 @@ export default function LensThicknes() {
 
         setTimeout(() => {
             setisLoading(false);
-            setStep(5);
+
+            if (lens?.LenseBrand === "SUNGLASSES") {
+                setStep(7);
+            } else {
+                setStep(5);
+            }
+
+
             window.scrollTo(0, 0);
         }, 700);
     }

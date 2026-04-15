@@ -88,7 +88,7 @@ export default function ProductDetails({ product, activeIndex, setactiveIndex, s
   }
 
 
-  const directAddtoCart = product?.sunglassesType && product?.sunglassesType === "Non-Prescription Sunglasses";
+  const directAddtoCart = product?.frameType === "Non-Prescription Sunglasses";
 
 
 

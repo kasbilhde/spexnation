@@ -19,6 +19,7 @@ export default function HeroSlider() {
     const [allBanner, setallBanner] = useState([]);
     const [IsLoading, setIsLoading] = useState(false);
     const [activeIndex, setActiveIndex] = useState(0);
+    const [windowWidth, setWindowWidth] = useState('');
 
     const goTo = (index) => {
         swiperRef.current?.slideToLoop(index);
@@ -50,13 +51,35 @@ export default function HeroSlider() {
 
 
     useEffect(() => {
+
+
+        // Handler to call on window resize
+        function handleResize() {
+            setWindowWidth(window.innerWidth);
+        }
+
+
+        // Add event listener
+        window.addEventListener('resize', handleResize);
+
+        // Call handler right away so state gets updated with initial window size
+        handleResize();
+
+        // fetch data from the server
         fetchAccessories();
+
+        // Remove event listener on cleanup
+        return () => window.removeEventListener('resize', handleResize);
     }, [])
 
 
     // Inside HeroSlider, at the top of the return:
     if (IsLoading && allBanner.length === 0) return <HeroSliderSkeleton />;
 
+
+
+
+    console.log(allBanner);
 
 
     return (
@@ -76,7 +99,7 @@ export default function HeroSlider() {
             >
                 {allBanner.map((slide) => (
                     <SwiperSlide key={slide.id}>
-                        {({ isActive }) => <SlideContent slide={slide} isActive={isActive} />}
+                        {({ isActive }) => <SlideContent slide={slide} isActive={isActive} windowWidth={windowWidth} />}
                     </SwiperSlide>
                 ))}
             </Swiper>
@@ -100,7 +123,7 @@ export default function HeroSlider() {
 
 
 /* ─── Individual slide ──────────────────────────────────────── */
-function SlideContent({ slide, isActive }) {
+function SlideContent({ slide, isActive, windowWidth }) {
     const stagger = (i) => ({
         hidden: { opacity: 0, y: 26 },
         visible: {
@@ -110,13 +133,11 @@ function SlideContent({ slide, isActive }) {
         },
     });
 
-
-
     return (
         <Link href={slide?.Route} className={`w-full h-fit bg-gray-200 flex items-center overflow-hidden`}>
 
 
-            <Image src={convertImagesToWebP(slide?.img)} alt={"Hero Banner Image"} width={0} height={0} sizes="100vw" className="w-full h-full object-cover" priority />
+            <Image src={convertImagesToWebP(windowWidth > 768 ? slide?.img : slide?.smallimg)} alt={"Hero Banner Image"} width={0} height={0} sizes="100vw" className="w-full h-full object-cover" priority />
 
 
         </Link >
