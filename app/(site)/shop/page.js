@@ -214,7 +214,11 @@ export default function ProductPage() {
     }
 
 
-    const filteredShopProducts = searchProducts(filteredProducts, search);
+
+
+    const shoppageProducts = filteredProducts?.filter((item) => item?.frameType === "Frame");
+
+    const filteredShopProducts = searchProducts(shoppageProducts, search);
 
 
 
@@ -240,7 +244,7 @@ export default function ProductPage() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
                     <div className={`lg:col-span-1 p-4 border border-gray-200 bg-white max-h-[500px] lg:max-h-[700px] w-full z-40 ${fopen ? 'sticky top-[75px]' : 'lg:sticky lg:top-[75px]'}`}>
-                        <ShopFilter fopen={fopen} setfOpen={setfOpen} selectedBrand={selectedBrand} setslectedBrand={setslectedBrand} selectedGender={selectedGender} setselectedGender={setselectedGender} selectedMatarial={selectedMatarial} setselectedMatarial={setselectedMatarial} selectedPrice={selectedPrice} setselectedPrice={setselectedPrice} selectedLenWidth={selectedLenWidth} setselectedLenWidth={setselectedLenWidth} selectedBrideWidth={selectedBrideWidth} setselectedBrideWidth={setselectedBrideWidth} handleClearFilter={handleClearFilter} filterLength={filteredProducts?.length} selectedFrameType={selectedFrameType} setselectedFrameType={setselectedFrameType} selectedFrameShape={selectedFrameShape} setselectedFrameShape={setselectedFrameShape} brandList={allBrandList} />
+                        <ShopFilter fopen={fopen} setfOpen={setfOpen} selectedBrand={selectedBrand} setslectedBrand={setslectedBrand} selectedGender={selectedGender} setselectedGender={setselectedGender} selectedMatarial={selectedMatarial} setselectedMatarial={setselectedMatarial} selectedPrice={selectedPrice} setselectedPrice={setselectedPrice} selectedLenWidth={selectedLenWidth} setselectedLenWidth={setselectedLenWidth} selectedBrideWidth={selectedBrideWidth} setselectedBrideWidth={setselectedBrideWidth} handleClearFilter={handleClearFilter} filterLength={filteredShopProducts?.length} selectedFrameType={selectedFrameType} setselectedFrameType={setselectedFrameType} selectedFrameShape={selectedFrameShape} setselectedFrameShape={setselectedFrameShape} brandList={allBrandList} />
                     </div>
 
 

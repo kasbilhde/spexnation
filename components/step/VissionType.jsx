@@ -181,6 +181,8 @@ export default function VisionType() {
 
 
 
+
+
     return (
         <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -205,11 +207,8 @@ export default function VisionType() {
                     <button
                         key={opt.id}
                         onClick={(e) => { handleSeleteType(e, opt) }}
-                        className={`w-full h-full bg-gray-100 text-left p-2 rounded-md border transition-all
-              ${lens?.LenseUseCase === opt.id
-                                ? "border-yellow-500 bg-yellow-50"
-                                : "border-gray-200 hover:border-yellow-500/80"
-                            }`}
+                        className={`w-full h-full bg-gray-100 text-left p-2 rounded-md border transition-all disabled:cursor-not-allowed disabled:bg-gray-300 disabled:text-gray-600
+                            ${opt.id === "noprescription" && lens?.ProductDetails?.frameType === "Prescription Sunglasses" ? "hidden" : ""} ${lens?.LenseUseCase === opt.id ? "border-yellow-500 bg-yellow-50" : "border-gray-200 hover:border-yellow-500/80"}`}
                     >
                         <div className="flex gap-3">
                             <div>
