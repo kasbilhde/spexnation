@@ -27,7 +27,7 @@ export default function ProductPage() {
 
     const [searchLoading, setsearchLoading] = useState(false);
     const [fopen, setfOpen] = useState(false);
-    const [selectedBrand, setslectedBrand] = useState(["SUNGLASSES"]);
+    const [selectedBrand, setslectedBrand] = useState([]);
     const [selectedGender, setselectedGender] = useState([]);
     const [selectedMatarial, setselectedMatarial] = useState([]);
     const [selectedFrameType, setselectedFrameType] = useState([]);
@@ -93,7 +93,6 @@ export default function ProductPage() {
         fetchProducts();
         fetchSettingsData();
     }, [])
-
 
 
     // handle search function is here

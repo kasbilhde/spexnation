@@ -99,8 +99,6 @@ export default function ProductDetails({ product, activeIndex, setactiveIndex, s
     setisLoading(true);
 
 
-    console.log(item);
-
     // fream item object here
     const freamItem = {
       cartItemId: crypto.randomUUID(),
