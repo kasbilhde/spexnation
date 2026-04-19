@@ -16,6 +16,15 @@ const BackBtn = ({ step, setStep }) => {
             return;
         }
 
+
+
+          if (lens?.ProductDetails?.frameType === "Prescription Sunglasses" && step == 7) {
+            setStep(4);
+            return;
+        }
+        
+        
+
         setStep(step - 1);
     }
 
