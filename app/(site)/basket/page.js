@@ -43,11 +43,12 @@ export default function CartPage() {
 
         setStep(0);
 
-
         setLens({
             ProductDetails: {},
+            LenseBrand: "",
             LenseName: "",
             LenColor: {},
+            selectedProductIndex: 0,
             LenseUseCase: "",
             LenseThickness: "",
             pdType: "1",

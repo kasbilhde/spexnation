@@ -47,8 +47,6 @@ export default function LensThicknes() {
     const [disAndRecommanded, setdisAndRecommanded] = useState({});
 
 
-    console.log(lens);
-
 
     //handle next function is here
     const handleNext = (e) => {
@@ -62,18 +60,16 @@ export default function LensThicknes() {
         }
 
 
-
         setisLoading(true);
 
         setTimeout(() => {
             setisLoading(false);
 
-            if (lens?.LenseBrand === "SUNGLASSES") {
+            if (lens?.ProductDetails?.frameType === "Prescription Sunglasses") {
                 setStep(7);
             } else {
                 setStep(5);
             }
-
 
             window.scrollTo(0, 0);
         }, 700);

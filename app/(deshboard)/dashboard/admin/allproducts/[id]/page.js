@@ -92,7 +92,6 @@ export default function ProductSinglePage() {
 
 
 
-
     const fetchProducts = async (id) => {
         try {
             // Make API call to get all the product
@@ -104,7 +103,9 @@ export default function ProductSinglePage() {
             });
 
             const res = await response.json();
+
             setsingleProducts(res?.data);
+            setProductType(res?.data?.frameType);
             settitle(res?.data?.ProductTitle);
             setbrand(res?.data?.brand);
             setshortdes(res?.data?.shortdes);
@@ -170,6 +171,7 @@ export default function ProductSinglePage() {
         fetchProducts(id);
         fetchSettingsData();
     }, [id])
+
 
 
 
@@ -272,6 +274,8 @@ export default function ProductSinglePage() {
 
 
 
+
+    // finding coresponding brand list is here
     const corespondingBrands = allbrandList?.filter((item) => {
         return item?.forProduct === productType;
     });
@@ -509,6 +513,7 @@ export default function ProductSinglePage() {
                     <p className="text-gray-500">{singleProducts.shortdes}</p>
 
                     <div className="grid grid-cols-2 gap-4 text-sm">
+                        <Info label="Frame Type" value={singleProducts.frameType} />
                         <Info label="Brand" value={singleProducts.brand} />
                         <Info label="Price" value={`${singleProducts.product_price}`} />
                         <Info label="Gender" value={singleProducts.gender} />
