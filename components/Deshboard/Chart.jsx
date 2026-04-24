@@ -1,68 +1,102 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useMemo } from 'react';
 
 // Dynamically import ApexCharts for Next.js to avoid SSR issues
-const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
+const ReactApexChart = dynamic(() => import('react-apexcharts'), {
+    ssr: false,
+});
 
-const Chart = ({ title, des }) => {
-    // Example data for chart
-    const seriesData = {
-        prices: [8107.85, 8128.0, 8122.9, 8165.5, 8340.7, 8423.7, 8423.5, 8514.3, 8481.85],
-        dates: [
-            "2023-10-01", "2023-10-02", "2023-10-03",
-            "2023-10-04", "2023-10-05", "2023-10-06",
-            "2023-10-07", "2023-10-08", "2023-10-09"
-        ]
-    };
+const Chart = ({ dashbaord }) => {
+    const totalRevenue = Number(dashbaord?.totalRevenue || 0);
 
-    const [state] = useState({
+    // Last 12 months auto generate
+    const chartData = useMemo(() => {
+        const months = [];
+        const sales = [];
+
+        const now = new Date();
+
+        for (let i = 11; i >= 0; i--) {
+            const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+
+            months.push(date.toLocaleString('default', { month: 'short' }));
+
+            // Only current month = real revenue
+            if (i === 0) {
+                sales.push(totalRevenue);
+            } else {
+                sales.push(0);
+            }
+        }
+
+        return { months, sales };
+    }, [totalRevenue]);
+
+    const chartOptions = {
         series: [
             {
-                name: "STOCK ABC",
-                data: seriesData.prices
-            }
+                name: 'Sales',
+                data: chartData.sales,
+            },
         ],
         options: {
             chart: {
                 type: 'area',
                 height: 350,
-                zoom: { enabled: false }
+                toolbar: {
+                    show: false,
+                },
             },
-            colors: ['#939393ff'], // <-- Change this to any HEX or RGB color
-            dataLabels: { enabled: false },
-            stroke: { curve: 'smooth', width: 2 }, // smooth curve + line width
+            colors: ['#939393ff'],
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2,
+            },
             fill: {
-                type: "gradient", // optional: makes area look nicer
+                type: 'gradient',
                 gradient: {
                     shadeIntensity: 1,
                     opacityFrom: 0.4,
                     opacityTo: 0.1,
-                    stops: [0, 90, 100]
-                }
+                    stops: [0, 90, 100],
+                },
             },
             title: {
-                text: "Renenue",
-                align: 'left'
+                text: 'Revenue',
+                align: 'left',
             },
             subtitle: {
-                text: "Renenue Chart",
-                align: 'left'
+                text: 'Monthly Revenue Chart',
+                align: 'left',
             },
-            labels: seriesData.dates,
-            xaxis: { type: 'datetime' },
-            yaxis: { opposite: true },
-            legend: { horizontalAlign: 'left' }
-        }
-    });
+            xaxis: {
+                categories: chartData.months,
+            },
+            yaxis: {
+                opposite: true,
+            },
+            tooltip: {
+                y: {
+                    formatter: (val) => `$${val}`,
+                },
+            },
+            legend: {
+                horizontalAlign: 'left',
+            },
+        },
+    };
 
     return (
-        <div className="bg-white p-4 border border-gray-200">
-            <div className="h-fit" id="chart">
+        <div className="bg-white p-4 border border-gray-200 rounded-xl">
+            <div id="chart">
                 <ReactApexChart
-                    options={state.options}
-                    series={state.series}
+                    options={chartOptions.options}
+                    series={chartOptions.series}
                     type="area"
                     height={350}
                 />

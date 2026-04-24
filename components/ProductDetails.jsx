@@ -22,6 +22,7 @@ export default function ProductDetails({ product, activeIndex, setactiveIndex, s
       LenseName: product?.ProductTitle,
       LenseBrand: product?.brand,
       LenColor: product?.product_Images[activeIndex]?.color,
+      selectedProductIndex: 0,
       LenseUseCase: "",
       LenseThickness: "",
       pdType: "1",
