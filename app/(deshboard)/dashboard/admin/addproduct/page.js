@@ -18,24 +18,6 @@ const productTypes = [
 ]
 
 
-const brands = [
-    "Ambri",
-    "Colt",
-    "Cube",
-    "Elite",
-    "Ferucci",
-    "Joia",
-    "MB",
-    "NHi",
-    "Sightique",
-    "SUNGLASSES",
-    "Synergy",
-    "Visage",
-    "Others"
-];
-
-
-
 const AddproductPage = () => {
 
     const router = useRouter();
