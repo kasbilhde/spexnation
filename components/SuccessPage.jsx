@@ -11,6 +11,24 @@ export default function SuccessPage({ sessionId }) {
     useEffect(() => {
         if (!sessionId) return;
 
+
+
+
+
+        // google ads conversion
+        if (typeof window !== 'undefined' && window.gtag) {
+            window.gtag('event', 'conversion', {
+                'send_to': 'AW-18106341198/hN2vCJnKnp8cEM6u47lD',
+                'value': 1.0,
+                'currency': 'GBP',
+                transaction_id: Date.now().toString(),
+            });
+        }
+
+
+
+
+
         async function fetchData() {
             try {
                 const res = await fetch(
