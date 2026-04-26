@@ -12,23 +12,6 @@ export default function SuccessPage({ sessionId }) {
         if (!sessionId) return;
 
 
-
-
-
-        // google ads conversion
-        if (typeof window !== 'undefined' && window.gtag) {
-            window.gtag('event', 'conversion', {
-                'send_to': 'AW-18106341198/hN2vCJnKnp8cEM6u47lD',
-                'value': 1.0,
-                'currency': 'GBP',
-                transaction_id: Date.now().toString(),
-            });
-        }
-
-
-
-
-
         async function fetchData() {
             try {
                 const res = await fetch(
@@ -38,6 +21,19 @@ export default function SuccessPage({ sessionId }) {
 
                 const response = await res.json();
                 setSession(response);
+
+
+                // google ads conversion
+                if (typeof window !== 'undefined' && window.gtag) {
+                    window.gtag('event', 'conversion', {
+                        'send_to': 'AW-18106341198/hN2vCJnKnp8cEM6u47lD',
+                        'value': response.amount_total / 100 || 1.0,
+                        'currency': 'GBP',
+                        transaction_id: Date.now().toString(),
+                    });
+                }
+
+
 
             } catch (err) {
                 console.error(err);
