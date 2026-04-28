@@ -434,6 +434,40 @@ export default function ProductSinglePage() {
 
 
 
+
+    // handle best selling function is here
+    const handleBestSelling = async (e, id, isBestSelling, token) => {
+        e.preventDefault();
+
+
+        setLoading(true);
+
+        try {
+            // Make API call to get all the product
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/bestsellingupdateProduct/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    "authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify({ isBestSelling: !isBestSelling })
+            });
+
+            const res = await response.json();
+            toast.success(res.message);
+            setIsModalOpen(false);
+            fetchProducts(id);
+        } catch (error) {
+            console.error('Error Deleting products:', error);
+        }
+
+        setLoading(false);
+    }
+
+
+
+
+
     if (loading) {
         return (
             <div className="h-screen flex justify-center items-center">
@@ -450,7 +484,7 @@ export default function ProductSinglePage() {
         <div className="min-h-screen bg-gray-100">
             <div className="border border-gray-200 bg-white grid grid-cols-1 lg:grid-cols-2 gap-5 p-5">
                 {/* IMAGE SECTION */}
-                <div className="order-last">
+                <div className="order-last relative">
                     <Image
                         height={1000}
                         width={1000}
@@ -458,6 +492,14 @@ export default function ProductSinglePage() {
                         src={allImageArray[selectedIndex]}
                         className="w-full h-[300px] md:h-[400px] object-contain border border-gray-200"
                     />
+
+                    {
+                        singleProducts.isBestSelling && (
+                            <div style={{ borderRadius: "20px" }} className="text-sm font-thin absolute top-3 right-3 bg-yellow-700/90 text-white px-2">
+                                <span>Best Selling</span>
+                            </div>
+                        )
+                    }
 
                     <div className="flex gap-3 mt-4 overflow-x-auto">
                         {
@@ -475,6 +517,8 @@ export default function ProductSinglePage() {
                                 )
                             })
                         }
+
+
                     </div>
 
 
@@ -512,7 +556,22 @@ export default function ProductSinglePage() {
                     </div>
                     <p className="text-gray-500">{singleProducts.shortdes}</p>
 
+
+                    <div className="bg-gray-100">
+                        <div className="text-gray-800 flex justify-between items-center gap-2 text-white rounded-md m-2 py-1">
+                            <h2 className="text-gray-800">BestSelling:</h2>
+                            <div>
+                                <button style={{ borderRadius: "25px" }} onClick={(e) => handleBestSelling(e, singleProducts._id, singleProducts.isBestSelling, token)} className={`flex items-center bg-white p-1 w-[45px] h-[25px] ${singleProducts.isBestSelling ? "justify-end border border-yellow-600" : "border border-gray-600 justify-start"}`}>
+                                    <div style={{ borderRadius: "50%" }} className={`h-4 w-4 ${singleProducts.isBestSelling ? "pBg" : "bg-gray-600"}`}></div>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+
                     <div className="grid grid-cols-2 gap-4 text-sm">
+
                         <Info label="Frame Type" value={singleProducts.frameType} />
                         <Info label="Brand" value={singleProducts.brand} />
                         <Info label="Price" value={`${singleProducts.product_price}`} />
