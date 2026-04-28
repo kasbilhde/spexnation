@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Container from "../../../components//Container";
 import AccessoriesCard from "../../../components/AccessoriesCard";
 import ProductBreadcrumb from "../../../components/ProductBreadcrumb";
+import ProductNotFound from "../../../components/ProductNotFound";
 import ShopFilter from "../../../components/ShopFilter";
 import ProductGridSkeleton from '../../../components/skalaton/ProductGridSkeleton';
 
@@ -189,13 +190,22 @@ export default function ProductPage() {
 
 
 
-
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-                    {filteredAccessories?.map((item, index) => (
-                        <div key={index} className="text-center">
-                            <AccessoriesCard item={item} />
+
+                    {filteredAccessories?.length > 0 ? (
+                        <>
+                            {filteredAccessories.map((item, index) => (
+                                <div key={index} className="text-center">
+                                    <AccessoriesCard item={item} />
+                                </div>
+                            ))}
+                        </>
+                    ) : (
+                        <div className="col-span-4">
+                            <ProductNotFound />
                         </div>
-                    ))}
+                    )}
+
                 </div>
 
 

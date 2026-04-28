@@ -93,7 +93,7 @@ const AccessoriesPage = () => {
             toast.success(res.message);
             setName('');
             setprice(0);
-            setshortDess('');
+            setshortDes('');
             setdescription('');
             handleRemovedImage(e);
             fetchAccessories();
