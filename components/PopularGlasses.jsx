@@ -12,12 +12,13 @@ export default function PopularGlasses() {
 
   const [loading, setLoading] = useState(true);
   const [allProducts, setAllProducts] = useState([]);
+  const [loadmore, setloadmore] = useState(true);
 
 
   const fetchProducts = async () => {
     try {
       // Make API call to get all the product
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/allproducts`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/bestsellingproduct`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -40,6 +41,8 @@ export default function PopularGlasses() {
 
 
 
+  const BestsellingProduct = loadmore ? allProducts : allProducts?.slice(0, 8);
+
   return (
     <section className="bg-gray-100 min-h-[600px]">
       <section className="px-4 md:px-6 py-6 pt-12">
@@ -56,7 +59,7 @@ export default function PopularGlasses() {
 
 
             ) : (
-              allProducts?.slice(0, 8).map((item, index) => (
+              BestsellingProduct.map((item, index) => (
                 <motion.div
                   initial={{ opacity: 0, x: -45 }}
                   whileInView={{ opacity: 1, x: 0 }}
@@ -72,7 +75,9 @@ export default function PopularGlasses() {
             )
           }
 
-
+        </div>
+        <div className="flex items-center justify-center w-full mt-8">
+          <button onClick={() => setloadmore(!loadmore)} className="text-white text-sm bg-yellow-700 px-2 cursor-pointer py-1 rounded-md flex items-center gap-1">{loadmore ? "Load Less" : "Load More"}</button>
         </div>
       </section>
     </section >

@@ -189,7 +189,7 @@ export default function ProductDetails({ product, activeIndex, setactiveIndex, s
 
       {/* Price */}
       <div className="border-b border-gray-200 pb-4">
-        <p className="text-gray-600 text-sm mb-2">Includes prescription lenses</p>
+        <p className="text-gray-600 text-sm mb-2">{directAddtoCart ? "Includes Non prescription lenses" : "Includes prescription lenses"} </p>
         <div className="flex items-baseline gap-2">
           <span className="text-4xl font-light text-gray-900">£{product?.product_price}</span>
           {/* <span className="text-lg text-gray-500 line-through font-light">£599</span> */}

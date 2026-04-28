@@ -35,6 +35,13 @@ export default function DashboardProductCard({ item }) {
                     />
 
                     {/* Quick View on Hover */}
+                    {
+                        item.isBestSelling && (
+                            <div style={{ borderRadius: "20px" }} className="text-xs font-thin absolute top-3 right-3 bg-yellow-700/90 text-white px-1.5">
+                                <span>Best Selling</span>
+                            </div>
+                        )
+                    }
 
                 </div>
 
